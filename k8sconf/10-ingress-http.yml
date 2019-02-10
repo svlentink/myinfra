@@ -1,0 +1,39 @@
+# https://kubernetes.io/docs/concepts/services-networking/ingress/
+# https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-side-https-enforcement-through-redirect
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: http-ingress
+spec:
+  rules:
+  - host: dev.lent.ink
+    http:
+      paths:
+      - backend:
+          serviceName: webide
+          servicePort: 80
+  - http:
+      paths:
+      - backend:
+          serviceName: cdn
+          servicePort: 80
+  tls:
+  - hosts:
+    - lent.ink
+    - dev.lent.ink
+    - blog.lent.ink
+    - cdn.lent.ink
+    - lentink.consulting
+    - loiszoektwerk.nl
+    - loiszoektwerk.be
+    - lisanne.lent.ink
+    - juflisanne.nl
+    secretName: testsecret-tls-TODO
+
+
+
+
+
+
+
