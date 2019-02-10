@@ -1,0 +1,21 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cdn
+spec:
+  selector:
+    matchLabels:
+      app: cdn
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: cdn
+    spec:
+      containers:
+      - name: cdn
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+

@@ -1,0 +1,12 @@
+# https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#exposing-pods-to-the-cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: cdn
+#  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 80
+  selector:
+    app: cdn
