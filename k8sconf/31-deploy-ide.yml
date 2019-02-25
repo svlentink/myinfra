@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cdn
+  name: ide
 spec:
   selector:
     matchLabels:
-      app: cdn
+      app: ide
   replicas: 1
   template: # create pods; pod template
     metadata:
       labels:
-        app: cdn
+        app: ide
     spec:
       containers:
-      - name: cdn
-        image: svlentink/mywebsite
+      - name: ide
+        image: sapk/cloud9
         ports:
-        - containerPort: 80
+        - containerPort: 8191
 
