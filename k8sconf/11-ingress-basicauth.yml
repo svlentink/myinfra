@@ -1,4 +1,4 @@
 # https://kubernetes.github.io/ingress-nginx/examples/auth/basic/
 # https://appscode.com/products/voyager/6.0.0-rc.0/guides/ingress/security/basic-auth/
-# https://kubernetes.io/docs/concepts/configuration/secret/
 # https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#authentication
+

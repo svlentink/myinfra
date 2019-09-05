@@ -52,6 +52,7 @@ install_microk8s() {
   
   kubectl get all --all-namespaces
   kubectl cluster-info
+  kubectl apply --kustomize ./kustomize
 }
 install_dropbox() {
   echo $FUNCNAME

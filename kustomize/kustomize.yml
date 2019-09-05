@@ -1,0 +1,20 @@
+---
+# TODO the following is NOT a secret, but this syntax is handy
+secretGenerator:
+- name: ssl-fullchain-main
+  files:
+  - ~/.sekretoj/sslcerts/fullchain1.pem
+
+---
+secretGenerator:
+- name: ssl-privkey-main
+  files:
+  - ~/.sekretoj/sslcerts/privkey1.pem
+
+---
+secretGenerator:
+- name: basicauth-webide
+  files:
+  - ~/.sekretoj/webIDE/.webIDE.env
+
+
