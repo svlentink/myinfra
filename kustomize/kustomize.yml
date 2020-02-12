@@ -1,20 +1,20 @@
+# https://kubectl.docs.kubernetes.io/pages/reference/kustomize.html#secretgenerator
+# https://stackoverflow.com/questions/49614439/kubernetes-secret-types
 ---
-# TODO the following is NOT a secret, but this syntax is handy
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 secretGenerator:
-- name: ssl-fullchain-main
+- name: main-tls
   files:
-  - ~/.sekretoj/sslcerts/fullchain1.pem
+    - ~/.sekretoj/sslcerts/tls.cert # fullchain
+    - ~/.sekretoj/sslcerts/tls.key  # privkey
+  type: "kubernetes.io/tls"
+- name: env_file_secret
+  # env is a path to a file to read lines of key=val
+  # you can only specify one env file per secret.
+  env: env.txt
+  type: Opaque
 
----
-secretGenerator:
-- name: ssl-privkey-main
-  files:
-  - ~/.sekretoj/sslcerts/privkey1.pem
-
----
-secretGenerator:
 - name: basicauth-webide
-  files:
-  - ~/.sekretoj/webIDE/.webIDE.env
-
-
+  env: ~/.sekretoj/webIDE/.webIDE.env
+  type: Opaque

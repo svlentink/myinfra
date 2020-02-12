@@ -29,11 +29,9 @@ spec:
     - blog.lent.ink
     - cdn.lent.ink
     - lentink.consulting
-    - loiszoektwerk.nl
-    - loiszoektwerk.be
     - lisanne.lent.ink
     - juflisanne.nl
-    secretName: testsecret-tls-TODO
+    secretName: main-tls
 
 
 

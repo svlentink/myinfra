@@ -34,7 +34,8 @@ install_basics() {
     git \
     sudo \
     tmux \
-    vim
+    vim \
+    sudo
 }
 install_docker() {
   echo $FUNCNAME
@@ -43,12 +44,16 @@ install_docker() {
 }
 install_microk8s() {
   echo $FUNCNAME
+# if you do not have sudo, microk8s fails...
+#  su ubuntu
+  echo 'root ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/root
+  
   snap install microk8s --classic
   sleep 120
   microk8s.start
   microk8s.status
   which kubectl || snap alias microk8s.kubectl kubectl
-  microk8s.enable dashboard dns ingress
+  microk8s.enable dns ingress storage #dashboard
   
   kubectl get all --all-namespaces
   kubectl cluster-info
@@ -81,6 +86,14 @@ install_webide() {
 install_mywordpress() {
   echo $FUNCNAME
   # TODO
+}
+install_certmanager() {
+  # https://cert-manager.io/docs/installation/kubernetes/
+  kubectl create namespace cert-manager
+  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.13.0/cert-manager.yaml
+  # FIXME:
+  # https://cert-manager.io/docs/configuration/acme/
+  # https://github.com/Azure/application-gateway-kubernetes-ingress/blob/master/docs/how-tos/lets-encrypt.md
 }
 
 
