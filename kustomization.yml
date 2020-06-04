@@ -3,18 +3,18 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+generatorOptions:
+  disableNameSuffixHash: true
 secretGenerator:
 - name: main-tls
+#  namespace: ingress
   files:
-    - ~/.sekretoj/sslcerts/tls.cert # fullchain
-    - ~/.sekretoj/sslcerts/tls.key  # privkey
+    - sslcerts/tls.crt # fullchain
+    - sslcerts/tls.key  # privkey
   type: "kubernetes.io/tls"
-- name: env_file_secret
-  # env is a path to a file to read lines of key=val
-  # you can only specify one env file per secret.
-  env: env.txt
-  type: Opaque
 
+# https://github.com/svlentink/dockerfiles/blob/415b6a56d5245a1a33a0861ac4dde21b9c7f9eb9/svlentink/ipfilter/docker-entrypoint.sh#L62-L63
 - name: basicauth-webide
-  env: ~/.sekretoj/webIDE/.webIDE.env
+  files:
+  - webIDE/auth
   type: Opaque

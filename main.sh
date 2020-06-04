@@ -53,11 +53,12 @@ install_microk8s() {
   microk8s.start
   microk8s.status
   which kubectl || snap alias microk8s.kubectl kubectl
-  microk8s.enable dns ingress storage #dashboard
+  microk8s.enable ingress storage #dashboard dns
   
   kubectl get all --all-namespaces
   kubectl cluster-info
-  kubectl apply --kustomize ./kustomize
+  cp kustomization.yml ~/.sekretoj
+  kubectl apply --kustomize ~/.sekretoj
 }
 install_dropbox() {
   echo $FUNCNAME

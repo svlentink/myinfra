@@ -2,3 +2,24 @@
 # https://appscode.com/products/voyager/6.0.0-rc.0/guides/ingress/security/basic-auth/
 # https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#authentication
 
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-with-auth
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basicauth-webide
+    nginx.ingress.kubernetes.io/auth-realm: 'Homework env. please login'
+spec:
+  rules:
+  - host: dev.lent.ink
+    http:
+      paths:
+      - backend:
+          serviceName: webide
+          servicePort: 80
+  tls:
+  - hosts:
+    - dev.lent.ink
+    secretName: main-tls
+

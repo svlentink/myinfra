@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ide
-        image: sapk/cloud9
+        image: nginx:alpine #sapk/cloud9
         ports:
-        - containerPort: 8191
+        - containerPort: 80 #8191
 

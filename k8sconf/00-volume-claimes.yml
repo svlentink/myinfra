@@ -1,0 +1,66 @@
+# https://github.com/GoogleContainerTools/kaniko/blob/master/examples/volume-claim.yaml
+---
+#kind: PersistentVolumeClaim
+#apiVersion: v1
+#metadata:
+#  name: ide-claim
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#  resources:
+#    requests:
+#      storage: 5Gi
+#  storageClassName: local-storage
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cdn-lp-claim
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: microk8s-hostpath
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cdn-pdf-claim
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: microk8s-hostpath
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cdn-img-claim
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: microk8s-hostpath
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cdn-tar-claim
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: microk8s-hostpath
+

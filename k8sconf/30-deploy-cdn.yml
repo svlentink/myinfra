@@ -13,9 +13,32 @@ spec:
       labels:
         app: cdn
     spec:
+#     restartPolicy: Never
       containers:
       - name: cdn
         image: svlentink/mywebsite
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: cdn-pdf
+          mountPath: /var/www/cdn.lent.ink/pdf
+        - name: cdn-tar
+          mountPath: /var/www/cdn.lent.ink/tar
+        - name: cdn-img
+          mountPath: /var/www/cdn.lent.ink/img
+        - name: cdn-lp
+          mountPath: /var/www/cdn.lent.ink/lp
+      volumes:
+      - name: cdn-pdf
+        persistentVolumeClaim:
+          claimName: cdn-pdf-claim
+      - name: cdn-tar
+        persistentVolumeClaim:
+          claimName: cdn-tar-claim
+      - name: cdn-img
+        persistentVolumeClaim:
+          claimName: cdn-img-claim
+      - name: cdn-lp
+        persistentVolumeClaim:
+          claimName: cdn-lp-claim
 

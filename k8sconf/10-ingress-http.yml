@@ -1,41 +1,17 @@
-# https://kubernetes.io/docs/concepts/services-networking/ingress/
-# https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-side-https-enforcement-through-redirect
-
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: http-ingress
   annotations:
-# https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#ssl-ciphers
-    nginx.ingress.kubernetes.io/ssl-ciphers: 'TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-256-GCM-SHA384:TLS13-AES-128-GCM-SHA256'
     kubernetes.io/ingress.class: "nginx"
+#    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: dev.lent.ink
-    http:
-      paths:
-      - backend:
-          serviceName: webide
-          servicePort: 80
   - http:
       paths:
       - backend:
           serviceName: cdn
           servicePort: 80
-  tls:
-  - hosts:
-    - lent.ink
-    - dev.lent.ink
-    - blog.lent.ink
-    - cdn.lent.ink
-    - lentink.consulting
-    - lisanne.lent.ink
-    - juflisanne.nl
-    secretName: main-tls
-
-
-
-
-
-
 
