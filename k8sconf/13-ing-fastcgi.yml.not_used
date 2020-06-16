@@ -2,32 +2,19 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-conf
+  name: fastcgi-cm
 data:
-  default.conf: |
-    upstream wpstream {
-      server php:9000;
-    }
-    server {
-      server_name _;
-      root /var/php/$host;
-      index index.php;
-    
-      location ~ \.php$ { #~ ^/.+\.php(/|$) {
-        include fastcgi.conf;
-        fastcgi_intercept_errors on;
-    #    fastcgi_index index.php;
-        fastcgi_pass_header Set-Cookie;
-        fastcgi_pass_header Cookie;
-    #    fastcgi_param HTTPS off;
-        fastcgi_pass wpstream;
-      }
-    
-      location / {
-    #    try_files $uri /index.php?$query_string;
-        try_files $uri $uri/ /index.php?$args;
-      }
-    }
+# https://github.com/nginx/nginx/blob/master/conf/fastcgi.conf
+  DOCUMENT_ROOT: "/var/php/$host"
+  QUERY_STRING: "$query_string"
+  REQUEST_METHOD: "$request_method"
+  REQUEST_URI: "$request_uri"
+  DOCUMENT_URI: "$document_uri"
+  SCRIPT_FILENAME: "/var/php/$host$fastcgi_script_name"
+  SCRIPT_NAME: "$fastcgi_script_name"
+#  CONTENT_TYPE: "$content_type"
+#  CONTENT_LENGTH: "$content_length"
+#  HTTP_PROXY: ""
 
 ---
 apiVersion: networking.k8s.io/v1beta1
@@ -39,12 +26,17 @@ metadata:
     nginx.ingress.kubernetes.io/auth-secret: basicauth-webide
     nginx.ingress.kubernetes.io/auth-realm: 'Wordpress admin area'
     nginx.ingress.kubernetes.io/rewrite-target: /
+# https://kubernetes.github.io/ingress-nginx/user-guide/fcgi-services/
+    nginx.ingress.kubernetes.io/backend-protocol: "FCGI"
+    nginx.ingress.kubernetes.io/fastcgi-index: "index.php"
+    nginx.ingress.kubernetes.io/fastcgi-params-configmap: "fastcgi-cm"
+#    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
   - host: lisanne.lent.ink
     http: &httpa_rules
       paths:
-      - path: /wp-admin/
+      - path: /wp-admin/ #*.php
         backend:
           serviceName: wordpress
           servicePort: 9000
@@ -63,6 +55,10 @@ metadata:
   name: wordpress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "FCGI"
+    nginx.ingress.kubernetes.io/fastcgi-index: "index.php"
+    nginx.ingress.kubernetes.io/fastcgi-params-configmap: "fastcgi-cm"
+#    nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if ($request_method !~ ^(GET|HEAD|OPTIONS)$ ) {
         return 444;
@@ -72,6 +68,7 @@ spec:
   - host: lisanne.lent.ink
     http: &http_rules
       paths:
+#      - path: "/*.php"
       - backend:
           serviceName: wordpress
           servicePort: 9000
