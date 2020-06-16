@@ -9,3 +9,20 @@ This new repo. will contain my new (Q1 2019) setup using kubernetes.
 
 At this moment I only run services on port 80, 443, 443 udp and 53 udp.
 
+<!--
+## Directories I've used in the past
+
+- ~/.sekretoj
+- ~/Dropbox
+- wordpress
+- ~/.ssh keys
+- systemd (wordpress-backup, deploy-containers)
+
+-->
+
+## FIXME
+
+- explain life cycle management (update cadence)
+- explain exit strategy
+
+

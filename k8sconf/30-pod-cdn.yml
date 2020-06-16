@@ -32,13 +32,17 @@ spec:
       - name: cdn-pdf
         persistentVolumeClaim:
           claimName: cdn-pdf-claim
+          readOnly: true
       - name: cdn-tar
         persistentVolumeClaim:
           claimName: cdn-tar-claim
+          readOnly: true
       - name: cdn-img
         persistentVolumeClaim:
           claimName: cdn-img-claim
+          readOnly: true
       - name: cdn-lp
         persistentVolumeClaim:
           claimName: cdn-lp-claim
+          readOnly: true
 

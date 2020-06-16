@@ -5,6 +5,7 @@ metadata:
   name: cdn-pdf
   labels:
     type: local
+    name: cdn-pdf
 spec:
   capacity:
     storage: 1Gi
@@ -22,6 +23,7 @@ metadata:
   name: cdn-img
   labels:
     type: local
+    name: cdn-img
 spec:
   capacity:
     storage: 1Gi
@@ -38,6 +40,7 @@ metadata:
   name: cdn-tar
   labels:
     type: local
+    name: cdn-tar
 spec:
   capacity:
     storage: 1Gi
@@ -54,6 +57,7 @@ metadata:
   name: cdn-lp
   labels:
     type: local
+    name: cdn-lp
 spec:
   capacity:
     storage: 1Gi

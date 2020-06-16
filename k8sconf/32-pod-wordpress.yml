@@ -1,0 +1,51 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+spec:
+  selector:
+    matchLabels:
+      app: wordpress
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+#     restartPolicy: Never
+      containers:
+      - name: wpdb
+        image: mariadb
+        volumeMounts:
+        - name: wp-db
+          mountPath: /var/lib/mysql
+        ports:
+        - containerPort: 3306
+          name: wpdb
+        envFrom:
+        - secretRef:
+            name: wp-db-env
+      - name: php
+        image: wordpress:fpm-alpine
+        command: ["php-fpm"]
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: wp-php
+          mountPath: /var/php
+        envFrom:
+        - secretRef:
+            name: wp-db-env
+      volumes:
+      - name: wp-php
+        persistentVolumeClaim:
+          claimName: wp-php-claim
+      - name: wp-db
+        persistentVolumeClaim:
+          claimName: wp-db-claim
+          #      - name: wp-db-env
+          #        secret:
+          #          secretName: wp-db-env
+
+

@@ -18,3 +18,8 @@ secretGenerator:
   files:
   - webIDE/auth
   type: Opaque
+
+- name: wp-db-env
+  env: wordpress/db.env
+  type: Opaque
+

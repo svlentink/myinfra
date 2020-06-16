@@ -1,0 +1,32 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: wp-php-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: microk8s-hostpath
+  selector:
+    matchLabels:
+      name: wp-php
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: wp-db-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: microk8s-hostpath
+  selector:
+    matchLabels:
+      name: wp-db
+

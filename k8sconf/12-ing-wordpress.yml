@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fastcgi-cm
+data:
+# https://github.com/nginx/nginx/blob/master/conf/fastcgi.conf
+  DOCUMENT_ROOT: "/var/php/$host"
+  QUERY_STRING: "$query_string"
+  REQUEST_METHOD: "$request_method"
+  REQUEST_URI: "$request_uri"
+  DOCUMENT_URI: "$document_uri"
+  SCRIPT_FILENAME: "/var/php/$host$fastcgi_script_name"
+  SCRIPT_NAME: "$fastcgi_script_name"
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: wordpress-admin
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basicauth-webide
+    nginx.ingress.kubernetes.io/auth-realm: 'Wordpress admin area'
+    nginx.ingress.kubernetes.io/rewrite-target: /
+# https://kubernetes.github.io/ingress-nginx/user-guide/fcgi-services/
+    nginx.ingress.kubernetes.io/backend-protocol: "FCGI"
+    nginx.ingress.kubernetes.io/fastcgi-index: "index.php"
+    nginx.ingress.kubernetes.io/fastcgi-params-configmap: "fastcgi-cm"
+spec:
+  rules:
+  - host: lisanne.lent.ink
+    http: &httpa_rules
+      paths:
+      - path: /wp-admin/
+        backend:
+          serviceName: wordpress
+          servicePort: 9000
+  - host: juflisanne.nl
+    http: *httpa_rules
+  tls:
+  - hosts:
+    - lisanne.lent.ink
+    - juflisanne.nl
+    secretName: main-tls
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: wordpress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "FCGI"
+    nginx.ingress.kubernetes.io/fastcgi-index: "index.php"
+    nginx.ingress.kubernetes.io/fastcgi-params-configmap: "fastcgi-cm"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      if ($request_method !~ ^(GET|HEAD|OPTIONS)$ ) {
+        return 444;
+      }
+spec:
+  rules:
+  - host: lisanne.lent.ink
+    http: &http_rules
+      paths:
+      - backend:
+          serviceName: wordpress
+          servicePort: 9000
+  - host: juflisanne.nl
+    http: *http_rules
+  tls:
+  - hosts:
+    - lisanne.lent.ink
+    - juflisanne.nl
+    secretName: main-tls
+
+

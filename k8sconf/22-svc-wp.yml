@@ -1,0 +1,28 @@
+# https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#exposing-pods-to-the-cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+#  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 9000
+  selector:
+    app: wordpress
+
+# https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wpdb
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress
+  clusterIP: None
+

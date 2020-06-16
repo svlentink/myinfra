@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wp-php
+  labels:
+    type: local
+    name: wp-php
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  # kubectl get sc
+  storageClassName: microk8s-hostpath
+  hostPath:
+    path: /root/wordpress-backup
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: wp-db
+  labels:
+    type: local
+    name: wp-db
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: microk8s-hostpath
+  hostPath:
+    path: /root/wordpress-backup/dbdir
+
+
+

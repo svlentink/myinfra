@@ -1,0 +1,34 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dns
+spec:
+  selector:
+    matchLabels:
+      app: dns
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: dns
+    spec:
+      containers:
+      - name: dns
+        image: alpine
+        ports:
+        - containerPort: 53
+          protocol: UDP
+        command: ["sh", "-c", "apk --no-cache add bind; named -c /etc/named.conf -g -u root"] # "named"]
+        volumeMounts:
+        - name: dns-cm
+          mountPath: /etc/named.conf
+          subPath: named.conf
+        - name: dns-cm
+          mountPath: /var/zone.conf
+          subPath: zone.conf
+      volumes:
+      - name: dns-cm
+        configMap:
+          name: dns-cm
+

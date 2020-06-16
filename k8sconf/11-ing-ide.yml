@@ -1,15 +1,21 @@
 # https://kubernetes.github.io/ingress-nginx/examples/auth/basic/
 # https://appscode.com/products/voyager/6.0.0-rc.0/guides/ingress/security/basic-auth/
 # https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#authentication
-
+---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-with-auth
+  name: webide
   annotations:
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: basicauth-webide
     nginx.ingress.kubernetes.io/auth-realm: 'Homework env. please login'
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    # The following snippet prevents MITM proxies from spying
+    nginx.ingress.kubernetes.io/server-snippet: |
+      if ($ssl_protocol != "TLSv1.3" ) {
+        return 302 https://google.com/?q=enforce+browser+to+use+TLSv1.3+instead+of+$ssl_protocol;
+      }
 spec:
   rules:
   - host: dev.lent.ink
@@ -17,7 +23,7 @@ spec:
       paths:
       - backend:
           serviceName: webide
-          servicePort: 80
+          servicePort: 8181
   tls:
   - hosts:
     - dev.lent.ink
