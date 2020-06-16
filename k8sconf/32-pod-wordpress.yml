@@ -1,4 +1,36 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-cm
+data:
+  default.conf: |
+    upstream wpstream {
+    # https://stackoverflow.com/questions/40678327/how-can-containers-in-a-pod-refer-to-each-other-by-name
+      server localhost:9000;
+    }
+    server {
+      server_name _;
+      root /var/php/$host;
+      index index.php;
+    
+      location ~ \.php$ { #~ ^/.+\.php(/|$) {
+        include fastcgi.conf;
+        fastcgi_intercept_errors on;
+    #    fastcgi_index index.php;
+        fastcgi_pass_header Set-Cookie;
+        fastcgi_pass_header Cookie;
+    #    fastcgi_param HTTPS off;
+        fastcgi_pass wpstream;
+      }
+    
+      location / {
+    #    try_files $uri /index.php?$query_string;
+        try_files $uri $uri/ /index.php?$args;
+      }
+    }
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,17 +58,33 @@ spec:
         envFrom:
         - secretRef:
             name: wp-db-env
+
       - name: php
         image: wordpress:fpm-alpine
         command: ["php-fpm"]
         ports:
         - containerPort: 9000
+          name: php
         volumeMounts:
         - name: wp-php
           mountPath: /var/php
         envFrom:
         - secretRef:
             name: wp-db-env
+
+      - name: wp-proxy
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-cm
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+          readOnly: true
+        - name: wp-php
+          mountPath: /var/php
+          readOnly: true
+
       volumes:
       - name: wp-php
         persistentVolumeClaim:
@@ -44,8 +92,8 @@ spec:
       - name: wp-db
         persistentVolumeClaim:
           claimName: wp-db-claim
-          #      - name: wp-db-env
-          #        secret:
-          #          secretName: wp-db-env
+      - name: nginx-cm
+        configMap:
+          name: nginx-cm
 
 

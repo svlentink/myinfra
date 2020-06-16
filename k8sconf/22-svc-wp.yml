@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress
+  name: php
 #  namespace: default
 spec:
   ports:
-  - name: http
-    port: 9000
+  - port: 9000
   selector:
     app: wordpress
+  clusterIP: None
 
 # https://kubernetes.io/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/
 ---
@@ -25,4 +25,18 @@ spec:
   selector:
     app: wordpress
   clusterIP: None
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wp-proxy
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 80
+      name: http
+  selector:
+    app: wordpress
 
