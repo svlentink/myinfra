@@ -29,6 +29,7 @@ data:
         try_files $uri $uri/ /index.php?$args;
       }
     }
+    # TODO, compare with https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/#proxy-everything
 
 ---
 apiVersion: apps/v1

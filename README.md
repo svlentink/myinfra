@@ -25,4 +25,7 @@ At this moment I only run services on port 80, 443, 443 udp and 53 udp.
 - explain life cycle management (update cadence)
 - explain exit strategy
 
+```
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.1/cert-manager.yaml
+```
 
