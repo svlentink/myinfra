@@ -1,0 +1,48 @@
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: start-dev-env
+spec:
+  schedule: "0 8 * * 0-5"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: main
+            image: hashicorp/terraform:light
+            workingDir: /app
+            args:
+            - init; terraform apply
+            - '-refresh=true'
+            - '-input=false'
+        envFrom:
+        - secretRef:
+            name: tf-env
+        volumeMounts:
+        - name: tf-cm
+          mountPath: /app/main.tf
+          subPath: main.tf
+          readOnly: true
+        - name: tfstate-pv
+          mountPath: /tfstate
+      volumes:
+      - name: tf-cm
+        configMap:
+          name: tf-cm
+      - name: tfstate-pv
+        persistentVolumeClaim:
+          claimName: tfstate-pvc
+
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: stop-dev-env
+spec:
+  schedule: "0 18 * * 0-5"
