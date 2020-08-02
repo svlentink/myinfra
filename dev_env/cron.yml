@@ -16,10 +16,9 @@ spec:
           - name: main
             image: hashicorp/terraform:light
             workingDir: /app
+            command: ["/docker-entrypoint.sh"]
             args:
-            - init; terraform apply
-            - '-refresh=true'
-            - '-input=false'
+            - apply
         envFrom:
         - secretRef:
             name: tf-env
@@ -30,6 +29,10 @@ spec:
           readOnly: true
         - name: tfstate-pv
           mountPath: /tfstate
+        - name: tf-cm
+          mountPath: /docker-entrypoint.sh
+          subPath: docker-entrypoint.sh
+          readOnly: true
       volumes:
       - name: tf-cm
         configMap:
@@ -37,7 +40,6 @@ spec:
       - name: tfstate-pv
         persistentVolumeClaim:
           claimName: tfstate-pvc
-
 
 ---
 apiVersion: batch/v1beta1

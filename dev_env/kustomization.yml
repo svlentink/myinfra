@@ -1,0 +1,16 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: devjob
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- cron.yml
+
+configMapGenerator:
+- name: tf-cm
+  files:
+    - docker-entrypoint.sh
+    - main.tf
+
