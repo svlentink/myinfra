@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: webide
+  name: ide
 #  namespace: default
 spec:
   ports:
