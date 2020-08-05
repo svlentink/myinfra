@@ -7,9 +7,9 @@ generatorOptions:
 
 resources:
 - pv.yml
-- pvc.yml
 - ing-http.yml
 - ing-https.yml
 - svc.yml
+- pvc.yml
 - pod.yml
 

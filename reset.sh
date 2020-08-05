@@ -1,20 +1,13 @@
 #!/bin/sh
 
 df -h|grep '/$'
-for i in k8sconf/*-pod-*.yml;do
-  kubectl delete -f $i
+for n in `kubectl get namespaces -o name|grep -v 'kube-'`; do
+  kubectl delete $n
 done
-for i in k8sconf/*-pvc-*.yml;do
-  kubectl delete -f $i
-done
-for i in k8sconf/*-pv-*.yml;do
-  kubectl delete -f $i
-done
+for pvc in `kubectl get pvc -o name`; do kubectl delete $pvc; done
+for pv in `kubectl get pv -o name`; do kubectl delete $pv; done
 microk8s.reset
+
 df -h|grep '/$'
 microk8s.enable ingress storage dns
-kubectl apply --kustomize ~/.sekretoj
-for i in k8sconf/*.yml;do
-  kubectl apply -f $i
-done
 

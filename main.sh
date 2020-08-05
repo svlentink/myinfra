@@ -1,5 +1,8 @@
 #/bin/bash
 
+echo this script isnt used anymore
+exit 1
+
 if grep -iq ubuntu /etc/issue; then
   echo Not Ubuntu
   exit
@@ -21,74 +24,13 @@ fi
 
 which docker 1> /dev/null && echo Already stuff installed && exit
 
-read -n1 -p "Did you copy the essential secrets to its location [Y/n]?" ynq0
-[[ "$ynq0" != [Yy] ]] && exit
 
-install_basics() {
-  echo $FUNCNAME
-  apt update
-  apt upgrade -y
-  apt install -y \
-    apt-transport-https \
-    curl \
-    git \
-    sudo \
-    tmux \
-    vim \
-    sudo
-}
-install_docker() {
-  echo $FUNCNAME
-  apt install -y docker.io python3-pip
-  pip3 install docker-compose
-}
-install_microk8s() {
-  echo $FUNCNAME
-# if you do not have sudo, microk8s fails...
-#  su ubuntu
-  echo 'root ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/root
-  
-  snap install microk8s --classic
-  sleep 120
-  microk8s.start
-  microk8s.status
-  which kubectl || snap alias microk8s.kubectl kubectl
-  # DNS is needed if you want to have internet access from within pods
-  microk8s.enable ingress storage dns #dashboard
-  
-  kubectl get all --all-namespaces
-  kubectl cluster-info
-  cp kustomization.yml ~/.sekretoj
-  kubectl apply --kustomize ~/.sekretoj
-}
-install_dropbox() {
-  echo $FUNCNAME
-  git clone https://github.com/svlentink/dockerfiles.git /var/dockerfiles
-  cd /var/dockerfiles/docker-compose/dropbox
-  docker-compose up -d
-  echo You should open the link that will be provide by dropbox inside your browser
-  echo wait for it . . .
-  sleep 30
-  docker-compose logs
-  cd
-}
 install_stack() {
   echo $FUNCNAME
   # TODO
   # stack: https://github.com/svlentink/debian_scripts/blob/master/stack.sh
 }
-install_mywebsites() {
-  echo $FUNCNAME
-  # TODO
-}
-install_webide() {
-  echo $FUNCNAME
-  # TODO
-}
-install_mywordpress() {
-  echo $FUNCNAME
-  # TODO
-}
+
 install_certmanager() {
   # https://cert-manager.io/docs/installation/kubernetes/
   kubectl create namespace cert-manager

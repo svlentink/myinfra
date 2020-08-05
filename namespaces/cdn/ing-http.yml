@@ -9,6 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/cors-allow-origin: "https://blobstorage.lentink.consulting"
     nginx.ingress.kubernetes.io/enable-cors: "true"
+#    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   rules:
   - http:

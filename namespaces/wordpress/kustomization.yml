@@ -7,9 +7,9 @@ generatorOptions:
 
 resources:
 - pv.yml
-- pvc.yml
 - ing.yml
 - svc.yml
+- pvc.yml
 - pod.yml
 
 secretGenerator:
