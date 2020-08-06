@@ -5,7 +5,13 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-for i in *; do
+if [ -n "$2" ]; then
+  list="$2"
+else
+  list=`ls`
+fi
+
+for i in $list; do
   if [ -d "$i" ]; then
     KPATH="$i/kustomization.y*ml"
     if [ -f $KPATH ]; then
