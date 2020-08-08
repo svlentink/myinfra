@@ -15,4 +15,5 @@ fi
 
 ls *.tf
 terraform init
-terraform "$1" -refresh=true -input=false
+terraform "$1" -refresh=true -input=false -auto-approve
+

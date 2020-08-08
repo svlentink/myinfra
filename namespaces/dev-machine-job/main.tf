@@ -30,7 +30,7 @@ resource "scaleway_instance_server" "dev" {
   image = "ubuntu_focal"
   enable_dynamic_ip = true
 
-  name = 'dev'
+  name = "dev"
   tags = [ "terraform", "autodelete" ]
 
   root_volume {
@@ -44,7 +44,4 @@ resource "scaleway_instance_server" "dev" {
 #  cloud_init = file("${path.module}/cloud-init.yml")
 }
 
-output "ip" {
-  value = "${scaleway_instance_server.dev.ip}"
-}
 

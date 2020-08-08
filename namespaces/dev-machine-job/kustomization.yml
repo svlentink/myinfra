@@ -8,7 +8,7 @@ generatorOptions:
 resources:
 - pv.yml
 - cron.yml
-  pvc.yml
+- pvc.yml
 
 configMapGenerator:
 - name: tf-cm
@@ -18,5 +18,5 @@ configMapGenerator:
 
 secretGenerator:
 - name: env
-  files: .env
+  env: .env
   type: Opaque
