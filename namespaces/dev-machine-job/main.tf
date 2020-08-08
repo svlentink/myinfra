@@ -41,7 +41,7 @@ resource "scaleway_instance_server" "dev" {
   additional_volume_ids = [ data.scaleway_instance_volume.stateful.id ]
 
 # https://cloudinit.readthedocs.io/en/latest/topics/examples.html
-#  cloud_init = file("${path.module}/cloud-init.yml")
+  cloud_init = file("${path.module}/cloud-init.yml")
 }
 
 

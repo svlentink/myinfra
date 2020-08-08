@@ -13,8 +13,9 @@ resources:
 configMapGenerator:
 - name: tf-cm
   files:
-    - docker-entrypoint.sh
-    - main.tf
+  - docker-entrypoint.sh
+  - main.tf
+  - cloud-init.yml
 
 secretGenerator:
 - name: env

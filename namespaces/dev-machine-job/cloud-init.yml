@@ -1,0 +1,24 @@
+#cloud-config
+# cloud-init devel schema --config-file cloud-init.yml
+
+packages:
+- curl
+- wget
+- apt-transport-https
+- git
+- vim
+- tmux
+- python3-pip
+
+runcmd:
+- snap install docker
+- pip3 install docker-compose
+- mkdir -p /srv/git
+- cd /srv/git; git clone https://github.com/svlentink/dockerfiles.git
+- lsblk -f|grep sda|grep -q ext4 || mkfs.ext4 /dev/sda
+- mkdir -p /mnt/stateful
+- mount -o defaults /dev/sda /mnt/stateful
+# https://www.scaleway.com/en/docs/how-to-mount-and-format-a-block-volume/
+
+final_message: "System up after $UPTIME sec."
+

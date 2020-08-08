@@ -24,6 +24,10 @@ spec:
                 name: env
             volumeMounts:
             - name: tf-cm
+              mountPath: /app/cloud-init.yml
+              subPath: cloud-init.yml
+              readOnly: true
+            - name: tf-cm
               mountPath: /app/main.tf
               subPath: main.tf
               readOnly: true
@@ -64,6 +68,10 @@ spec:
             - secretRef:
                 name: env
             volumeMounts:
+            - name: tf-cm
+              mountPath: /app/cloud-init.yml
+              subPath: cloud-init.yml
+              readOnly: true
             - name: tf-cm
               mountPath: /app/main.tf
               subPath: main.tf
