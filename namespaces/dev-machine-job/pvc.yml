@@ -1,0 +1,17 @@
+# https://github.com/GoogleContainerTools/kaniko/blob/master/examples/volume-claim.yaml
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: tfstate-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi
+  storageClassName: microk8s-hostpath
+  selector:
+    matchLabels:
+      name: tfstate
+

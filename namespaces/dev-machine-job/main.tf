@@ -1,4 +1,6 @@
 
+# Based on https://github.com/svlentink/assignment_nov2018#terraform
+
 # scw instance server create type=DEV1-S zone=fr-par-1 image=ubuntu_bionic root-volume=l:20G  name=dev  ip=new 
 # scw instance server create type=DEV1-S zone=fr-par-1 image=ubuntu_focal root-volume=l:20G  name=dev  ip=new 
 
@@ -45,3 +47,4 @@ resource "scaleway_instance_server" "dev" {
 output "ip" {
   value = "${scaleway_instance_server.dev.ip}"
 }
+

@@ -1,12 +1,14 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: devjob
+namespace: dev-machine-job
 generatorOptions:
   disableNameSuffixHash: true
 
 resources:
+- pv.yml
 - cron.yml
+  pvc.yml
 
 configMapGenerator:
 - name: tf-cm
@@ -14,3 +16,7 @@ configMapGenerator:
     - docker-entrypoint.sh
     - main.tf
 
+secretGenerator:
+- name: env
+  files: .env
+  type: Opaque
