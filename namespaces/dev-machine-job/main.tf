@@ -42,6 +42,11 @@ resource "scaleway_instance_server" "dev" {
 
 # https://cloudinit.readthedocs.io/en/latest/topics/examples.html
   cloud_init = file("${path.module}/cloud-init.yml")
+  user_data {
+    key = "passwd"
+    value = file("${path.module}/.passwd")
+  }
+
 }
 
 
