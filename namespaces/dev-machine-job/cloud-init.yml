@@ -11,6 +11,7 @@ packages:
 - python3-pip
 
 runcmd:
+- ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/timezone
 - snap install docker
 - pip3 install docker-compose
 - mkdir -p /srv/git
