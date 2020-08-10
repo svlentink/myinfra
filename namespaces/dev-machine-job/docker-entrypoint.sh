@@ -13,7 +13,8 @@ if [ -z "$1" ]; then
   echo "USAGE: $0 [apply|destroy]"
 fi
 
-ls *.tf
+pwd
+ls -al
 terraform init
 terraform "$1" -refresh=true -input=false -auto-approve
 
