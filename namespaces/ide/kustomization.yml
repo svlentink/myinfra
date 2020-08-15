@@ -16,6 +16,6 @@ secretGenerator:
 # https://github.com/svlentink/dockerfiles/blob/415b6a56d5245a1a33a0861ac4dde21b9c7f9eb9/svlentink/ipfilter/docker-entrypoint.sh#L62-L63
 - name: basicauth-webide
   files:
-  - .passwd
+  - auth
   type: Opaque
 

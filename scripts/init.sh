@@ -1,6 +1,6 @@
 #/bin/bash
 
-if grep -iq ubuntu /etc/issue; then
+if ! grep -iq ubuntu /etc/issue; then
   echo Not Ubuntu
   exit
 fi
@@ -19,6 +19,7 @@ fi
 # https://community.grafana.com/t/docker-container-run-return-error-exec-format-error/7851/4
 [[ `arch` == 'x86_64' ]] || (echo 'Are you on ARM? (lscpu)' && exit)
 
+timedatectl set-timezone CET
 
 apt update
 apt upgrade -y
@@ -28,5 +29,6 @@ apt install -y \
   git \
   sudo \
   tmux \
+  htop \
   vim
 

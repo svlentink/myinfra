@@ -8,15 +8,20 @@ terraform {
   backend "local" {
     path = "/tfstate/terraform.tfstate"
   }
+  required_providers {
+    scaleway = {
+      source = "terraform-providers/scaleway"
+    }
+  }
 }
 
 # https://www.terraform.io/docs/providers/scaleway/index.html
 provider "scaleway" {
-#  access_key      = "<SCALEWAY-ACCESS-KEY>"
-#  secret_key      = "<SCALEWAY-SECRET-KEY>"
-#  organization_id = "<SCALEWAY-ORGANIZATION-ID>"
-  zone            = "fr-par-1"
-  region          = "fr-par"
+  #  access_key      = "<SCALEWAY-ACCESS-KEY>"
+  #  secret_key      = "<SCALEWAY-SECRET-KEY>"
+  #  organization_id = "<SCALEWAY-ORGANIZATION-ID>"
+  zone   = "fr-par-1"
+  region = "fr-par"
 }
 
 # https://www.terraform.io/docs/providers/scaleway/d/instance_volume.html
@@ -26,24 +31,24 @@ data "scaleway_instance_volume" "stateful" {
 
 # https://www.terraform.io/docs/providers/scaleway/r/instance_server.html
 resource "scaleway_instance_server" "dev" {
-  type = "DEV1-S"
-  image = "ubuntu_focal"
+  type              = "DEV1-S"
+  image             = "ubuntu_focal"
   enable_dynamic_ip = true
 
   name = "dev"
-  tags = [ "terraform", "autodelete" ]
+  tags = ["terraform", "autodelete"]
 
   root_volume {
-    size_in_gb = 20
+    size_in_gb            = 20
     delete_on_termination = true
   }
 
-  additional_volume_ids = [ data.scaleway_instance_volume.stateful.id ]
+  additional_volume_ids = [data.scaleway_instance_volume.stateful.id]
 
-# https://cloudinit.readthedocs.io/en/latest/topics/examples.html
+  # https://cloudinit.readthedocs.io/en/latest/topics/examples.html
   cloud_init = file("${path.module}/cloud-init.yml")
   user_data {
-    key = "passwd"
+    key   = "passwd"
     value = file("${path.module}/.passwd")
   }
 

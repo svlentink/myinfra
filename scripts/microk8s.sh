@@ -1,6 +1,6 @@
 #/bin/bash
 
-if grep -iq ubuntu /etc/issue; then
+if ! grep -iq ubuntu /etc/issue; then
   echo Not Ubuntu
   exit
 fi
@@ -38,3 +38,4 @@ microk8s.enable ingress storage dns #dashboard
 
 kubectl get all --all-namespaces
 kubectl cluster-info
+
