@@ -1,7 +1,5 @@
 
 runcmd:
-  - export PUBLIC_IPv4=
-  - export PUBLIC_IPv6=
   - apt install -y apt-transport-https curl
   - curl --silent -o /installall.sh https://raw.githubusercontent.com/svlentink/myinfra/master/main.sh
   - bash /installall.sh > /var/log/installall.log

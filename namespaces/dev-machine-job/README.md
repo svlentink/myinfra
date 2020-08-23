@@ -20,3 +20,16 @@ kubectl describe job -n dev-machine-job testjob|tail
 kubectl delete job -n dev-machine-job testjob
 ```
 
+The machine is ready in around 5min:
+```
+# On Kubernetes
+kubectl describe pod -n dev-machine-job start-dev-env-1598176800-czsrw|grep -A 3 Completed
+      Reason:       Completed
+      Exit Code:    0
+      Started:      Sun, 23 Aug 2020 17:36:54 +0200
+      Finished:     Sun, 23 Aug 2020 17:37:40 +0200
+
+# On the newly created dev machine
+cloud-init analyze show | grep Total\ Time
+      Total Time: 139.31600 seconds
+```
