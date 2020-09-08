@@ -1,0 +1,44 @@
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: generate-bookmarks
+spec:
+  schedule: "0 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: main
+            image: python:alpine
+            workingDir: /workdir
+            command: ["/docker-entrypoint.sh"]
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: input
+              mountPath: /input
+              readOnly: true
+            - name: workdir
+              mountPath: /workdir
+            - name: cm
+              mountPath: /docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
+          volumes:
+          - name: cm
+            configMap:
+              name: cm
+              defaultMode: 0554
+          - name: workdir
+            persistentVolumeClaim:
+              claimName: workdir
+          - name: input
+            persistentVolumeClaim:
+              claimName: input
+          - name: output
+            persistentVolumeClaim:
+              claimName: output
