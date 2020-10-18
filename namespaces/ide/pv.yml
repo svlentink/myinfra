@@ -14,5 +14,5 @@ spec:
   # kubectl get sc
   storageClassName: microk8s-hostpath
   hostPath:
-    path: /root/Dropbox/webIDE
+    path: /mnt/k8s/ide
 

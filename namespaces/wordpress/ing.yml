@@ -16,9 +16,12 @@ spec:
     http: &httpa_rules
       paths:
       - path: /wp-admin/
+        pathType: Prefix
         backend:
-          serviceName: wp-proxy
-          servicePort: 80
+          service:
+            name: wp-proxy
+            port:
+              number: 80
   - host: juflisanne.nl
     http: *httpa_rules
   tls:
@@ -45,9 +48,13 @@ spec:
   - host: lisanne.lent.ink
     http: &http_rules
       paths:
-      - backend:
-          serviceName: wp-proxy
-          servicePort: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wp-proxy
+            port:
+              number: 80
   - host: juflisanne.nl
     http: *http_rules
   tls:

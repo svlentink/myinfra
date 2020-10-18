@@ -23,9 +23,13 @@ spec:
   - host: dev.lent.ink
     http:
       paths:
-      - backend:
-          serviceName: ide
-          servicePort: 8181
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ide
+            port:
+              number: 8181
   tls:
   - hosts:
     - dev.lent.ink

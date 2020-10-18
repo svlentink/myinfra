@@ -14,7 +14,7 @@ spec:
   # kubectl get sc
   storageClassName: microk8s-hostpath
   hostPath:
-    path: /root/wordpress-backup
+    path: /mnt/k8s/wordpress
 
 ---
 apiVersion: v1
@@ -31,7 +31,5 @@ spec:
     - ReadWriteMany
   storageClassName: microk8s-hostpath
   hostPath:
-    path: /root/wordpress-backup/dbdir
-
-
+    path: /mnt/k8s/wordpress/dbdir
 

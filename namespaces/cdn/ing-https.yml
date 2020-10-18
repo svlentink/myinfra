@@ -1,7 +1,7 @@
 # https://kubernetes.io/docs/concepts/services-networking/ingress/
 # https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-side-https-enforcement-through-redirect
 
-apiVersion: extensions/v1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: https
@@ -17,9 +17,13 @@ spec:
   - host: lent.ink
     http: &http_rules
       paths:
-      - backend:
-          serviceName: cdn
-          servicePort: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cdn
+            port:
+              number: 80
   - host: cdn.lent.ink
     http: *http_rules
   - host: blog.lent.ink

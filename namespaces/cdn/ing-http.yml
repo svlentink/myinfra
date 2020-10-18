@@ -1,5 +1,5 @@
 ---
-apiVersion: extensions/v1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: http-ingress
@@ -14,7 +14,11 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: cdn
-          servicePort: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cdn
+            port:
+              number: 80
 

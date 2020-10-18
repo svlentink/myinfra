@@ -1,0 +1,33 @@
+# https://github.com/GoogleContainerTools/kaniko/blob/master/examples/volume-claim.yaml
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: input-pvc
+spec:
+  accessModes:
+    - ReadOnceMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: microk8s-hostpath
+  selector:
+    matchLabels:
+      name: input
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: output-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: microk8s-hostpath
+  selector:
+    matchLabels:
+      name: output
+

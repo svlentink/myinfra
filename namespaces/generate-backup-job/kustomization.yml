@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: generate-backup-job
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- pv.yml
+- job.yml
+- pvc.yml
+
+configMapGenerator:
+- name: cm
+  files:
+  - docker-entrypoint.sh
+  - id_rsa.pub
+

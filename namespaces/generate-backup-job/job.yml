@@ -1,0 +1,40 @@
+
+# https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: generate-backup
+spec:
+  schedule: "1 23 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: main
+            image: busybox
+            command: ["/docker-entrypoint.sh"]
+            volumeMounts:
+            - name: input
+              mountPath: /input
+            - name: output
+              mountPath: /output
+            - name: cm
+              mountPath: /docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
+            - name: cm
+              mountPath: /key.pub
+              subPath: id_rsa.pub
+          volumes:
+          - name: cm
+            configMap:
+              name: cm
+              defaultMode: 0554
+          - name: input
+            persistentVolumeClaim:
+              claimName: input-pvc
+          - name: output
+            persistentVolumeClaim:
+              claimName: output-pvc

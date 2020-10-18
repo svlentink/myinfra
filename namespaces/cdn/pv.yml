@@ -14,7 +14,7 @@ spec:
   # kubectl get sc
   storageClassName: microk8s-hostpath
   hostPath:
-    path: /root/Dropbox/cdndata/pdf
+    path: /mnt/k8s/cdn/pdf
 
 ---
 apiVersion: v1
@@ -31,7 +31,7 @@ spec:
     - ReadOnlyMany
   storageClassName: microk8s-hostpath
   hostPath:
-    path: /root/Dropbox/cdndata/img
+    path: /mnt/k8s/cdn/img
 
 ---
 apiVersion: v1
@@ -48,7 +48,7 @@ spec:
     - ReadOnlyMany
   storageClassName: microk8s-hostpath
   hostPath:
-    path: /root/Dropbox/cdndata/tar
+    path: /mnt/k8s/cdn/tar
 
 ---
 apiVersion: v1
@@ -65,5 +65,5 @@ spec:
     - ReadOnlyMany
   storageClassName: microk8s-hostpath
   hostPath:
-    path: /root/Dropbox/webIDE/gits/pp/lp
+    path: /mnt/k8s/ide/gits/pp/lp
 
