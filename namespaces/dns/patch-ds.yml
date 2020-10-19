@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-ingress-microk8s-controller
+#  namespace: ingress
+spec:
+  selector:
+    matchLabels:
+      name: nginx-ingress-microk8s
+  template:
+    metadata:
+      labels:
+        name: nginx-ingress-microk8s
+    spec:
+      containers:
+      - name: nginx-ingress-microk8s
+        ports:
+        - name: proxied-udp-53
+          containerPort: 53
+          hostPort: 53
+          protocol: UDP

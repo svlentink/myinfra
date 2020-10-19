@@ -1,0 +1,13 @@
+# https://microk8s.io/docs/addon-ingress
+# https://github.com/ubuntu/microk8s/pull/1155
+# https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-ingress-udp-microk8s-conf #udp-services
+#  namespace: ingress
+data:
+  53: "dns/dns:53"
+#      namespace/svc:port
+

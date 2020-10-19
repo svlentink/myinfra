@@ -2,12 +2,18 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: dns
 generatorOptions:
   disableNameSuffixHash: true
+
+resources:
+- svc.yml
+- pod.yml
+
 configMapGenerator:
-- name: dns-cm
+- name: cm
+  namespace: dns
   files:
   - named.conf
   - zone.conf
-  - docker-entrypoint.sh
 
