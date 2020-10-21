@@ -9,5 +9,5 @@ for pv in `kubectl get pv -o name`; do kubectl delete $pv; done
 microk8s.reset
 
 df -h|grep '/$'
-microk8s.enable ingress storage dns
+microk8s.enable ingress storage dns metrics-server
 

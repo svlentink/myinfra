@@ -1,0 +1,14 @@
+#cloud-config
+# cloud-init devel schema --config-file cloud-init.yml
+
+packages:
+- apt-transport-https
+- git
+
+runcmd:
+- mkdir -p /srv/git
+- cd /srv/git; git clone https://github.com/svlentink/myinfra.git
+- cd /srv/git/myinfra/scripts/; ./init.sh; microk8s.sh
+
+final_message: "System up after $UPTIME sec."
+

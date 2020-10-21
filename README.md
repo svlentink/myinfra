@@ -32,6 +32,9 @@ for f in `find . -name '*.yml'`;do grep 'path: /' $f|grep -v '\- path' && echo $
 - explain exit strategy
 
 ```
-kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.16.0/cert-manager.yaml
+version=`curl -sSI https://github.com/jetstack/cert-manager/releases/latest|grep 'location:'|grep -o 'v[0-9]\.[0-9]\.[0-9]'`; \
+  echo $version > /var/log/installed-cert-manager-version.txt; \
+  kubectl apply --validate=false -f \
+    https://github.com/jetstack/cert-manager/releases/download/$version/cert-manager.yaml
 ```
 

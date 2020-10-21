@@ -27,8 +27,13 @@ apt install -y \
   apt-transport-https \
   curl \
   git \
+  htop \
+  python3-pip \
   sudo \
   tmux \
-  htop \
-  vim
+  vim \
+  wget
+
+# don't use snap install docker, snap does something with context for docker builds
+#docker.io
 
