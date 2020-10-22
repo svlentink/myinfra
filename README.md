@@ -9,18 +9,12 @@ This repo. contains my current setup using kubernetes.
 
 At this moment I only run services on port 80, 443, 443 udp and 53 udp.
 
-<!--
-## Directories I've used in the past
-
-- ~/.sekretoj
-- ~/Dropbox
-- wordpress
-- ~/.ssh keys
-- systemd (wordpress-backup, deploy-containers)
-
--->
 
 ## Mounted directories
+
+<!--
+~/.ssh keys
+-->
 
 ```shell
 for f in `find . -name '*.yml'`;do grep 'path: /' $f|grep -v '\- path' && echo $f; done
@@ -30,11 +24,4 @@ for f in `find . -name '*.yml'`;do grep 'path: /' $f|grep -v '\- path' && echo $
 
 - explain life cycle management (update cadence)
 - explain exit strategy
-
-```
-version=`curl -sSI https://github.com/jetstack/cert-manager/releases/latest|grep 'location:'|grep -o 'v[0-9]\.[0-9]\.[0-9]'`; \
-  echo $version > /var/log/installed-cert-manager-version.txt; \
-  kubectl apply --validate=false -f \
-    https://github.com/jetstack/cert-manager/releases/download/$version/cert-manager.yaml
-```
 

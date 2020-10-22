@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-ingress-udp-microk8s-conf #udp-services
+#  namespace: ingress
+data:
+  443: "vpn/vpn:443"
+
