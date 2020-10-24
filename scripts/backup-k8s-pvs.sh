@@ -10,7 +10,7 @@ if kubectl get pvc -A|grep -i bound; then
   fi
 fi
 
-SEARCH_DIR=/mnt/k8s/ide/gits/myinfra/namespaces
+SEARCH_DIR=/mnt/k8s
 OTHER_DIRS="$HOME/.ssh"
 
 PATHS=$(for f in `find $SEARCH_DIR -name '*.yml'`;do grep '^[\t\ ]*path: /' $f|grep -o "/.*"|grep -v '^/tmp'; done|sort)
@@ -26,6 +26,9 @@ for p in $PATHS;do
   fi
 done
 
+ALL_DIRS="$ROOT_PATHS $OTHER_DIRS"
+read -n1 -p "Press any key to backup; $ALL_DIRS" NOT_USED
+
 set -v
-tar czf "/tmp/backup-`hostname`-`date +%F`.tgz" $ROOT_PATHS $OTHER_DIRS
+tar czf "/tmp/backup-`hostname`-`date +%F`.tgz" $ALL_DIRS
 
