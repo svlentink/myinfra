@@ -3,10 +3,13 @@
 if [ -z "$1" ]; then
   echo "USAGE: $0 [create|apply|delete]"
   exit 1
+else
+  ACTION="$1"
+  shift
 fi
 
-if [ -n "$2" ]; then
-  list="$2"
+if [ -n "$1" ]; then
+  list="$@"
 else
   list=`ls`
 fi
@@ -17,8 +20,8 @@ for i in $list; do
     if [ -f $KPATH ]; then
       echo "$KPATH"
       grep -q "^namespace:" $KPATH && kubectl create namespace "$i"
-      kubectl "$1" --kustomize "$i"
-      if [[ "$1" == "delete" ]]; then
+      kubectl "$ACTION" --kustomize "$i"
+      if [[ "$ACTION" == "delete" ]]; then
         kubectl delete namespace "$i"
       fi
     fi
