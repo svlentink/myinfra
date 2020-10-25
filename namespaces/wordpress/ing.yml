@@ -7,9 +7,13 @@ metadata:
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: basicauth-wp
     nginx.ingress.kubernetes.io/auth-realm: 'Wordpress admin area'
-    nginx.ingress.kubernetes.io/rewrite-target: /
+#    nginx.ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+#    nginx.ingress.kubernetes.io/server-snippet: |
+#      # https://stackoverflow.com/questions/58215104/whats-the-neterr-http2-protocol-error-about
+#      gzip off;
+#      proxy_max_temp_file_size 0;
 spec:
   rules:
   - host: lisanne.lent.ink
@@ -17,11 +21,17 @@ spec:
       paths:
       - path: /wp-admin/
         pathType: Prefix
-        backend:
+        backend: &backend
           service:
             name: wp-proxy
             port:
               number: 80
+      - path: /wp-login.php
+        pathType: Prefix
+        backend: *backend
+      - path: /wp-cron.php
+        pathType: Prefix
+        backend: *backend
   - host: juflisanne.nl
     http: *httpa_rules
   tls:
@@ -38,7 +48,7 @@ metadata:
   annotations:
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+#    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/configuration-snippet: |
       if ($request_method !~ ^(GET|HEAD|OPTIONS)$ ) {
         return 444;

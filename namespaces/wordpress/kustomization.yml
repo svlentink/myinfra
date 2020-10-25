@@ -9,6 +9,7 @@ resources:
 - pv.yml
 - ing.yml
 - svc.yml
+- cm.yml
 - pvc.yml
 - pod.yml
 

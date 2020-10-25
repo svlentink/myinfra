@@ -1,41 +1,10 @@
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nginx-cm
-data:
-  default.conf: |
-    upstream wpstream {
-    # https://stackoverflow.com/questions/40678327/how-can-containers-in-a-pod-refer-to-each-other-by-name
-      server localhost:9000;
-    }
-    server {
-      server_name _;
-      root /var/php/$host;
-      index index.php;
-    
-      location ~ \.php$ { #~ ^/.+\.php(/|$) {
-        include fastcgi.conf;
-        fastcgi_intercept_errors on;
-    #    fastcgi_index index.php;
-        fastcgi_pass_header Set-Cookie;
-        fastcgi_pass_header Cookie;
-    #    fastcgi_param HTTPS off;
-        fastcgi_pass wpstream;
-      }
-    
-      location / {
-    #    try_files $uri /index.php?$query_string;
-        try_files $uri $uri/ /index.php?$args;
-      }
-    }
-    # TODO, compare with https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/#proxy-everything
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress
+  labels:
+    temp: jaja
 spec:
   selector:
     matchLabels:
