@@ -9,6 +9,23 @@ This repo. contains my current setup using kubernetes.
 
 At this moment I only run services on port 80, 443, 443 udp and 53 udp.
 
+## Migration procedure
+
+### Server switch
+
+- Creat new server and supply `cloud-init.yml`
+- on old server: stop DBs and others that could lead to write err.s
+- on old server: `scripts/backup-k8s-pvs.sh`
+- on laptop: `scp -3 old-server:/tmp/backup-*.tgz new-server:/tmp/`
+- on new server: `cd /;tar xzf /tmp/backup-*.tgz`
+- on new server: `cd /srv/git/myinfra/namespaces; ./main.sh apply cdn`
+- on new server: `cd /srv/git/myinfra/scripts; ./cert-manager.sh`
+
+### IP switch
+
+When switching servers and not floating the IP to the new server,
+then keep the old server with its IP active for 72+ hours for NS to be propagated.
+The actual switch is done in the interface of the DNS registrar.
 
 ## FIXME
 

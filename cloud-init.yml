@@ -6,10 +6,12 @@ packages:
 - git
 
 runcmd:
+- apt update;apt dist-upgrade -y
 - mkdir -p /srv/git
 - cd /srv/git; git clone https://github.com/svlentink/myinfra.git
 - cd /srv/git/myinfra/scripts/; ./init.sh; microk8s.sh
 - cd /srv/git/myinfra/namespaces; ./main.sh apply _shared dns
+- sleep 300;reboot
 
 final_message: "System up after $UPTIME sec."
 
