@@ -13,13 +13,14 @@ At this moment I only run services on port 80, 443, 443 udp and 53 udp.
 
 ### Server switch
 
+- on old server: stop cert-manager (a day before?) to avoid "Not re-issuing certificate as an attempt has been made in the last hour"
 - Creat new server and supply `cloud-init.yml`
 - on old server: stop DBs and others that could lead to write err.s
 - on old server: `scripts/backup-k8s-pvs.sh`
 - on laptop: `scp -3 old-server:/tmp/backup-*.tgz new-server:/tmp/`
 - on new server: `cd /;tar xzf /tmp/backup-*.tgz`
+- you may want to switch IP here?
 - on new server: `cd /srv/git/myinfra/namespaces; ./main.sh apply cdn`
-- on new server: `cd /srv/git/myinfra/scripts; ./cert-manager.sh`
 
 ### IP switch
 

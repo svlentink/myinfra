@@ -15,8 +15,10 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     # The following snippet prevents MITM proxies from spying
     nginx.ingress.kubernetes.io/server-snippet: |
-      if ($ssl_protocol != "TLSv1.3" ) {
-        return 302 https://google.com/?q=enforce+browser+to+use+TLSv1.3+instead+of+$ssl_protocol;
+      if ($https = "on") { #without this wrapper, ACME challenges fail
+        if ($ssl_protocol != "TLSv1.3") {
+          return 302 https://google.com/?q=enforce+browser+to+use+TLSv1.3+instead+of+$ssl_protocol;
+        }
       }
 spec:
   rules:

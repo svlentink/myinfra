@@ -20,7 +20,12 @@ for i in $list; do
     if [ -f $KPATH ]; then
       echo "$KPATH"
       grep -q "^namespace:" $KPATH && kubectl create namespace "$i"
-      kubectl "$ACTION" --kustomize "$i"
+      cd "$i"
+        kubectl "$ACTION" --kustomize .
+	if [ -f patch.sh ]; then
+	  ./patch.sh
+	fi
+      cd - > /dev/null
       if [[ "$ACTION" == "delete" ]]; then
         kubectl delete namespace "$i"
       fi
