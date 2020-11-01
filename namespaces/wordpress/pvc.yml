@@ -30,3 +30,19 @@ spec:
     matchLabels:
       name: wp-db
 
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: backup
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: microk8s-hostpath
+  selector:
+    matchLabels:
+      name: backup
+

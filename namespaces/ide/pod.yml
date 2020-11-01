@@ -16,6 +16,10 @@ spec:
       containers:
       - name: ide
         image: sapk/cloud9
+# We overwrite forever with node since we want it to fail
+# we had this issue with unreliable storage
+# https://github.com/sapk/dockerfiles/blob/master/cloud9/Dockerfile.alpine
+#        command: ["node", "/root/.c9/server.js", "-w", "/workspace", "--listen", "0.0.0.0"]
         args: ["--auth", ":"]
         ports:
         - containerPort: 8181

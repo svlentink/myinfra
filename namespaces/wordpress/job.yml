@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: backup
+spec:
+  schedule: "1 1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: main
+            image: mariadb
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            env:
+            - name: DBHOST
+              value: wpdb
+            envFrom:
+            - secretRef:
+                name: wp-db-env
+            workingDir: /output
+            command:
+            - /bin/sh
+            args:
+            - '-c'
+            - 'mysqldump --user=root --host=$(DBHOST) --port=3306 --all-databases --result-file=dump-$(DBHOST)-`date +%FT%R`.sql -p$(MYSQL_ROOT_PASSWORD)'
+          volumes:
+          - name: output
+            persistentVolumeClaim:
+              claimName: backup
+

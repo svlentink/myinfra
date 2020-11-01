@@ -11,6 +11,7 @@ resources:
 - svc.yml
 - cm.yml
 - pvc.yml
+- job.yml
 - pod.yml
 
 secretGenerator:
