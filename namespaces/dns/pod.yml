@@ -16,19 +16,27 @@ spec:
       containers:
       - name: dns
         image: alpine
+        env:
+        - name: IPV4
+          value: 212.47.228.126
         ports:
         - containerPort: 53
           protocol: UDP
-        command: ["sh", "-c", "apk --no-cache add bind; named -c /etc/named.conf -g -u root"] # "named"]
+        command:
+        - /docker-entrypoint.sh
         volumeMounts:
         - name: cm
-          mountPath: /etc/named.conf
-          subPath: named.conf
-        - name: cm
-          mountPath: /var/zone.conf
-          subPath: zone.conf
+          mountPath: /docker-entrypoint.sh
+          subPath: docker-entrypoint.sh
+        - name: pv
+          mountPath: /zones
       volumes:
       - name: cm
         configMap:
           name: cm
+          defaultMode: 0554
+      - name: pv
+        persistentVolumeClaim:
+          claimName: zones
+          readOnly: true
 

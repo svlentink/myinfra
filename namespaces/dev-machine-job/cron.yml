@@ -23,25 +23,25 @@ spec:
             - secretRef:
                 name: env
             volumeMounts:
-            - name: tf-cm
+            - name: cm
               mountPath: /app/.passwd
               subPath: .passwd
               readOnly: true
-            - name: tf-cm
+            - name: cm
               mountPath: /app/cloud-init.yml
               subPath: cloud-init.yml
               readOnly: true
-            - name: tf-cm
+            - name: cm
               mountPath: /app/main.tf
               subPath: main.tf
               readOnly: true
             - name: tfstate-pv
               mountPath: /tfstate
-            - name: tf-cm
+            - name: cm
               mountPath: /docker-entrypoint.sh
               subPath: docker-entrypoint.sh
           volumes:
-          - name: tf-cm
+          - name: cm
             configMap:
               name: tf-cm
               defaultMode: 0554
