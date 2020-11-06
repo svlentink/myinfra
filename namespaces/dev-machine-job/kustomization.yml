@@ -6,9 +6,9 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- pv.yml
+#- pv.yml
 - cron.yml
-- pvc.yml
+#- pvc.yml
 
 configMapGenerator:
 - name: tf-cm

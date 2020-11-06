@@ -30,6 +30,8 @@ spec:
             - 'mysqldump --user=root --host=$(DBHOST) --port=3306 --all-databases --result-file=dump-$(DBHOST)-`date +%FT%R`.sql -p$(MYSQL_ROOT_PASSWORD)'
           volumes:
           - name: output
-            persistentVolumeClaim:
-              claimName: backup
+            hostPath:
+              path: /mnt/k8s/wordpress/db-backup
+#            persistentVolumeClaim:
+#              claimName: backup
 

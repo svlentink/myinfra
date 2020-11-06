@@ -6,11 +6,11 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- pv.yml
+#- pv.yml
 - ing.yml
 - svc.yml
 - cm.yml
-- pvc.yml
+#- pvc.yml
 - job.yml
 - pod.yml
 

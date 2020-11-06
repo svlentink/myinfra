@@ -36,7 +36,9 @@ spec:
           name: cm
           defaultMode: 0554
       - name: pv
-        persistentVolumeClaim:
-          claimName: zones
-          readOnly: true
+#        persistentVolumeClaim:
+#          claimName: zones
+#          readOnly: true
+        hostPath:
+          path: /mnt/k8s/ide/gits/myinfra/namespaces/dns/zones
 

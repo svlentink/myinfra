@@ -1,4 +1,4 @@
-#/bin/bash
+#/bin/sh
 
 if ! grep -iq ubuntu /etc/issue; then
   echo Not Ubuntu
@@ -17,7 +17,12 @@ if [ "$USER" != 'root' ]; then
 fi
 
 # https://community.grafana.com/t/docker-container-run-return-error-exec-format-error/7851/4
-[[ `arch` == 'x86_64' ]] || (echo 'Are you on ARM? (lscpu)' && exit)
+if [ "$(arch)" = "x86_64" ]; then
+  echo "Correct CPU"
+else
+  echo 'Are you on ARM? (lscpu)'
+  exit
+fi
 
 timedatectl set-timezone CET
 

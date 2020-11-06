@@ -6,10 +6,10 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- pv.yml
+#- pv.yml
 - ing-http.yml
 - ing-https.yml
 - svc.yml
-- pvc.yml
+#- pvc.yml
 - pod.yml
 

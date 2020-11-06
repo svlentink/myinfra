@@ -1,26 +1,30 @@
-#/bin/bash
+#/bin/sh
 
 if ! grep -iq ubuntu /etc/issue; then
   echo Not Ubuntu
-  exit
+  exit 1
 fi
 
 UBUNTUYEAR=`grep -oh '[0-9]*' /etc/issue|head -1`
 if [ "$UBUNTUYEAR" -lt "18" ]; then
   echo Please use Ubuntu 18 or higher
-  exit
+  exit 1
 fi
 
 if [ "$USER" != 'root' ]; then
   echo Please run as root
-  exit
+  exit 1
 fi
 
-# https://community.grafana.com/t/docker-container-run-return-error-exec-format-error/7851/4
-[[ `arch` == 'x86_64' ]] || (echo 'Are you on ARM? (lscpu)' && exit)
+if which docker 1> /dev/null; then
+  echo "ERROR Already docker installed, not installing k8s"
+  exit 1
+fi
 
-which docker 1> /dev/null && echo Already stuff installed && exit
-
+if which kubectl 1> /dev/null; then
+  echo "WARNING kubectl already found on this machine, not installing microk8s"
+  exit
+fi
 
 # if you do not have sudo, microk8s fails...
 #  su ubuntu
@@ -39,4 +43,7 @@ microk8s.enable ingress storage dns metrics-server #dashboard
 kubectl get all --all-namespaces
 kubectl cluster-info
 kubectl top pod -A --containers
+
+echo Sleeping a while to make sure the cluster is ready
+sleep 120
 

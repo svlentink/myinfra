@@ -33,8 +33,13 @@ spec:
               name: cm
               defaultMode: 0554
           - name: input
-            persistentVolumeClaim:
-              claimName: input-pvc
+#            persistentVolumeClaim:
+#              claimName: input-pvc
+            hostPath:
+              path: /mnt/k8s
           - name: output
-            persistentVolumeClaim:
-              claimName: output-pvc
+#            persistentVolumeClaim:
+#              claimName: output-pvc
+            hostPath:
+              path: /tmp/backups
+

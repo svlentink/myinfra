@@ -7,9 +7,9 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- pv.yml
+#- pv.yml
 - svc.yml
-- pvc.yml
+#- pvc.yml
 - pod.yml
 
 configMapGenerator:

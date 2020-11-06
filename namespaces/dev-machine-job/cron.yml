@@ -46,8 +46,10 @@ spec:
               name: tf-cm
               defaultMode: 0554
           - name: tfstate-pv
-            persistentVolumeClaim:
-              claimName: tfstate-pvc
+            hostPath:
+              path: /tmp/tfstate
+#            persistentVolumeClaim:
+#              claimName: tfstate-pvc
 
 ---
 apiVersion: batch/v1beta1
@@ -95,6 +97,8 @@ spec:
               name: tf-cm
               defaultMode: 0554
           - name: tfstate-pv
-            persistentVolumeClaim:
-              claimName: tfstate-pvc
+            hostPath:
+              path: /tmp/tfstate
+#            persistentVolumeClaim:
+#              claimName: tfstate-pvc
 

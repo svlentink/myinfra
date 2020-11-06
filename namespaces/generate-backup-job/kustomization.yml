@@ -6,9 +6,9 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-- pv.yml
+#- pv.yml
 - job.yml
-- pvc.yml
+#- pvc.yml
 
 configMapGenerator:
 - name: cm

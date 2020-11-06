@@ -28,7 +28,9 @@ spec:
           mountPath: /workspace
       volumes:
       - name: ide
-        persistentVolumeClaim:
-          claimName: ide-claim
+        hostPath:
+          path: /mnt/k8s/ide
+#        persistentVolumeClaim:
+#          claimName: ide-claim
 
 

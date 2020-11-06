@@ -34,11 +34,18 @@ spec:
               name: cm
               defaultMode: 0554
           - name: workdir
-            persistentVolumeClaim:
-              claimName: workdir
+            hostPath:
+              path: /tmp/bookmarks-job-workdir
+#            persistentVolumeClaim:
+#              claimName: workdir
           - name: input
-            persistentVolumeClaim:
-              claimName: input
+            hostPath:
+              path: /mnt/k8s/ide/gits/pls/links
+#            persistentVolumeClaim:
+#              claimName: input
           - name: output
-            persistentVolumeClaim:
-              claimName: output
+            hostPath:
+              path: /tmp/bookmarks-job-output
+#            persistentVolumeClaim:
+#              claimName: output
+

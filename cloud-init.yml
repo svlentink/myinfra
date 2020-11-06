@@ -1,6 +1,8 @@
 #cloud-config
 # cloud-init devel schema --config-file cloud-init.yml
 
+package_update: true
+package_upgrade: true
 packages:
 - apt-transport-https
 - git
@@ -8,7 +10,7 @@ packages:
 runcmd:
 - mkdir -p /srv/git
 - cd /srv/git; git clone https://github.com/svlentink/myinfra.git
-- cd /srv/git/myinfra/scripts/; ./init.sh; ./microk8s.sh; ./cert-manager.sh
+- cd /srv/git/myinfra/scripts/; ./init.sh && ./microk8s.sh && ./cert-manager.sh
 - cd /srv/git/myinfra/namespaces; ./main.sh apply _shared dns
 - sleep 30;reboot
 
