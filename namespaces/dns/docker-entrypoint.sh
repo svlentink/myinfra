@@ -7,13 +7,13 @@ ls -l $ZONEFILESDIR
 
 # The following allows us to have
 # environment variables that start with
-# IP.. like IPV4-EXAMPLECOM=10.10.10.10
+# IP.. like IPV4_EXAMPLECOM=10.10.10.10
 # which allows us to have IPs defined
 # in our envs
 for i in `printenv|grep ^IP`; do
   echo "Setting $i"
   ESCAPED=`echo $i | sed 's/\./\\\\./g'`
-  sed -i "s=$ESCAPED\ \;\ =" $ZONEFILESDIR/*.conf
+  sed -i "s=$ESCAPED\ \;=" $ZONEFILESDIR/*.conf
 done
 
 echo "=== BEGIN zone files ==="
