@@ -6,14 +6,11 @@ generatorOptions:
   disableNameSuffixHash: true
 
 resources:
-#- pv.yml
 - cron.yml
-#- pvc.yml
 
 configMapGenerator:
 - name: tf-cm
   files:
-  - docker-entrypoint.sh
   - main.tf
   - cloud-init.yml
   - .passwd

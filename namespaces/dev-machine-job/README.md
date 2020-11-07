@@ -3,7 +3,10 @@
 Automatically spin up a dev machine during working hours.
 
 The `.env` file should contain
-[3 variables](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs#arguments-reference).
+[3 variables](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs#arguments-reference)
+for Scaleway
+and `CALENDAR_URL=` pointing to
+[Secret address in iCal format](https://calendar.google.com/calendar/u/0/r/settings/calendar).
 
 ## Testing it
 

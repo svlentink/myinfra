@@ -1,12 +1,10 @@
-
-# https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: start-dev-env
+  name: check-schedule
 spec:
-  schedule: "2 12 * * 0-5"
+  schedule: "*/3 * * * *"
   jobTemplate:
     spec:
       template:
@@ -14,62 +12,8 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: main
-            image: hashicorp/terraform:light
+            image: svlentink/terraform-calendar
             workingDir: /app
-            command: ["/docker-entrypoint.sh"]
-            args:
-            - apply
-            envFrom:
-            - secretRef:
-                name: env
-            volumeMounts:
-            - name: cm
-              mountPath: /app/.passwd
-              subPath: .passwd
-              readOnly: true
-            - name: cm
-              mountPath: /app/cloud-init.yml
-              subPath: cloud-init.yml
-              readOnly: true
-            - name: cm
-              mountPath: /app/main.tf
-              subPath: main.tf
-              readOnly: true
-            - name: tfstate-pv
-              mountPath: /tfstate
-            - name: cm
-              mountPath: /docker-entrypoint.sh
-              subPath: docker-entrypoint.sh
-          volumes:
-          - name: cm
-            configMap:
-              name: tf-cm
-              defaultMode: 0554
-          - name: tfstate-pv
-            hostPath:
-              path: /tmp/tfstate
-#            persistentVolumeClaim:
-#              claimName: tfstate-pvc
-
----
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: stop-dev-env
-spec:
-  schedule: "55 18 * * 0-5"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: main
-            image: hashicorp/terraform:light
-            workingDir: /app
-            command: ["/docker-entrypoint.sh"]
-            args:
-            - destroy
             envFrom:
             - secretRef:
                 name: env
@@ -88,9 +32,6 @@ spec:
               readOnly: true
             - name: tfstate-pv
               mountPath: /tfstate
-            - name: tf-cm
-              mountPath: /docker-entrypoint.sh
-              subPath: docker-entrypoint.sh
           volumes:
           - name: tf-cm
             configMap:
