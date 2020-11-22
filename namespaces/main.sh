@@ -19,7 +19,14 @@ for i in $list; do
     KPATH="$i/kustomization.y*ml"
     if [ -f $KPATH ]; then
       echo "$KPATH"
-      grep -q "^namespace:" $KPATH && kubectl create namespace "$i"
+      if grep "^namespace:" $KPATH; then
+	if grep "^namespace:" $KPATH|grep -q "$i"; then
+          kubectl create namespace "$i"
+	else
+	  echo ERROR Namespace in kustomize not the same as dir name
+	  exit 1
+	fi
+      fi
       cd "$i"
         kubectl "$ACTION" --kustomize .
 	if [ -f patch.sh ]; then

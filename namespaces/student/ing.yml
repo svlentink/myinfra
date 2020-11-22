@@ -1,0 +1,63 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cdn
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: student.likes2.party
+    http:
+      paths:
+      - path: /live
+        pathType: Prefix
+        backend:
+          service:
+            name: main
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - student.likes2.party
+    secretName: main
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ide
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basicauth
+    nginx.ingress.kubernetes.io/auth-realm: 'Homework env. please login'
+    # The following snippet prevents MITM proxies from spying
+    nginx.ingress.kubernetes.io/server-snippet: |
+      if ($scheme = "http") { #without this, ACME challenges fail
+        set $set_label_to_tls TLSv1.3;
+      }
+      set $tls_test "${ssl_protocol}${set_label_to_tls}";
+      if ($tls_test != "TLSv1.3") {
+        return 302 https://google.com/?q=enforce+browser+to+use+TLSv1.3+instead+of+$ssl_protocol;
+      }
+spec:
+  rules:
+  - host: student.likes2.party
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: main
+            port:
+              number: 8080
+  tls:
+  - hosts:
+    - student.likes2.party
+    secretName: main
+

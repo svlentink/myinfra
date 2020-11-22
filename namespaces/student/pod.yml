@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+spec:
+  selector:
+    matchLabels:
+      app: main
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+      - name: ide
+        image: codercom/code-server
+        args: ["--auth", "none"]
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: shared
+          mountPath: /home/coder/live
+      - name: cdn
+        image: caddy
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: shared
+          mountPath: /usr/share/caddy/live
+        - name: cm
+          mountPath: /etc/caddy/Caddyfile
+          subPath: Caddyfile
+        - name: cm
+          mountPath: /usr/share/caddy/index.html
+          subPath: caddy.html
+      volumes:
+      - name: shared
+        emptyDir: {}
+      - name: cm
+        configMap:
+          name: cm
+
