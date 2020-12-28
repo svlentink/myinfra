@@ -1,0 +1,31 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: main
+spec:
+  schedule: "50 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: main
+            image: alpine
+            command: ["/docker-entrypoint.sh"]
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: cm
+              mountPath: /docker-entrypoint.sh
+              subPath: docker-entrypoint.sh
+          volumes:
+          - name: cm
+            configMap:
+              name: cm
+              defaultMode: 0554
+          - name: output
+            hostPath:
+              path: /mnt/k8s/ide/gits/www/cdn.lent.ink/examples
+
