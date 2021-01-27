@@ -30,11 +30,17 @@ spec:
     http: *http_rules
   - host: lentink.consulting
     http: *http_rules
+  - host: loginalsburger.nl
+    http: *http_rules
+  - host: www.loginalsburger.nl
+    http: *http_rules
   tls:
   - hosts:
     - lent.ink
     - blog.lent.ink
     - cdn.lent.ink
     - lentink.consulting
+    - loginalsburger.nl
+    - www.loginalsburger.nl
     secretName: cdn-tls
 
