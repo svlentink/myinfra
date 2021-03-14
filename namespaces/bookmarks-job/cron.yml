@@ -15,6 +15,7 @@ spec:
           containers:
           - name: main
             image: python:alpine
+            imagePullPolicy: IfNotPresent
             workingDir: /workdir
             command: ["/docker-entrypoint.sh"]
             volumeMounts:

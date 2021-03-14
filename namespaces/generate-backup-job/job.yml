@@ -15,6 +15,7 @@ spec:
           containers:
           - name: main
             image: busybox
+            imagePullPolicy: IfNotPresent
             command: ["/docker-entrypoint.sh"]
             volumeMounts:
             - name: input

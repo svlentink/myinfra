@@ -13,6 +13,7 @@ spec:
           containers:
           - name: main
             image: svlentink/terraform-calendar
+            imagePullPolicy: IfNotPresent
             workingDir: /app
             envFrom:
             - secretRef:

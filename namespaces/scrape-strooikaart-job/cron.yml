@@ -13,6 +13,7 @@ spec:
           containers:
           - name: main
             image: alpine
+            imagePullPolicy: IfNotPresent
             command: ["/docker-entrypoint.sh"]
             volumeMounts:
             - name: output

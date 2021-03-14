@@ -15,7 +15,7 @@ spec:
     spec:
 #     restartPolicy: Never
       containers:
-      - name: cdn
+      - name: main
         image: svlentink/mywebsite
         ports:
         - containerPort: 80

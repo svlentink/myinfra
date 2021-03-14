@@ -8,6 +8,7 @@ generatorOptions:
 resources:
 #- pv.yml
 - job.yml
+- test.yml
 #- pvc.yml
 
 configMapGenerator:

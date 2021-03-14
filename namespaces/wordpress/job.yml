@@ -13,6 +13,7 @@ spec:
           containers:
           - name: main
             image: mariadb
+            imagePullPolicy: IfNotPresent
             volumeMounts:
             - name: output
               mountPath: /output

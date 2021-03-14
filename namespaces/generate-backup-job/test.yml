@@ -1,0 +1,33 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: logs
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: main
+            image: busybox
+            imagePullPolicy: IfNotPresent
+            command:
+            - /bin/sh
+            - -c
+            - cd /input;for i in `ls bsn_*/*/*.log`;do mkdir -p "/output/`dirname $i`";cp "/input/$i" "/output/$i";done
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: input
+              mountPath: /input
+          volumes:
+          - name: input
+            hostPath:
+              path: /var/log/pods
+          - name: output
+            hostPath:
+              path: /mnt/k8s/ide/testlogs
+
