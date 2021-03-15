@@ -1,3 +1,4 @@
+---
 # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment
 apiVersion: apps/v1
 kind: Deployment
@@ -15,8 +16,9 @@ spec:
     spec:
 #     restartPolicy: Never
       containers:
-      - name: main
+      - name: cdn
         image: svlentink/mywebsite
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         volumeMounts:

@@ -18,7 +18,7 @@ spec:
         image: alpine
         env:
         - name: IPV4
-          value: 212.47.228.126
+          value: 168.119.170.126
         ports:
         - containerPort: 53
           protocol: UDP

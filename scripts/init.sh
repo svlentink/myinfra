@@ -37,7 +37,10 @@ apt install -y \
   sudo \
   tmux \
   vim \
-  wget
+  wget \
+  resolvconf \
+  snapd \
+  dnsutils
 
 # don't use snap install docker, snap does something with context for docker builds
 #docker.io

@@ -3,8 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress
-  labels:
-    temp: jaja
 spec:
   selector:
     matchLabels:

@@ -38,7 +38,7 @@ microk8s.start
 microk8s status --wait-ready
 which kubectl || snap alias microk8s.kubectl kubectl
 # DNS is needed if you want to have internet access from within pods
-microk8s.enable ingress storage dns metrics-server #dashboard
+microk8s.enable ingress storage dns #metrics-server #dashboard
 
 kubectl get all --all-namespaces
 kubectl cluster-info
