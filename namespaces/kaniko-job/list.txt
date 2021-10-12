@@ -1,2 +1,6 @@
 --context=github.com/svlentink/www --destination=svlentink/mywebsite
 --context=github.com/svlentink/www --destination=svlentink/mywebsite:data --dockerfile=data.Dockerfile
+--context=github.com/svlentink/resume --destination=svlentink/yaml-resume
+--context=github.com/svlentink/resume --destination=svlentink/yaml-resume:myresume --dockerfile=myresume.Dockerfile
+--context=github.com/svlentink/myhugoblogs --destination=svlentink/myhugoblogs-data
+--context=github.com/svlentink/life-planner --destination=svlentink/lplan-data
