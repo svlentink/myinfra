@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: main
 spec:
-  schedule: "* * * * *"
+  schedule: "11 1,2,3,4,5,6 * * *"
   #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
   jobTemplate:
     spec:
@@ -15,6 +15,7 @@ spec:
           - name: init
             image: debian:bullseye-slim
             command:
+            - sh
             - /entrypoint.sh
             imagePullPolicy: IfNotPresent
             envFrom:
@@ -31,19 +32,16 @@ spec:
             - name: cross-container
               mountPath: /kaniko/.docker
               readOnly: false
-            - name: pv
-              mountPath: /tmp/kaniko
           containers:
           - name: main
             image: gcr.io/kaniko-project/executor:debug
             command:
+            - /busybox/sh
             - /kaniko/.docker/entrypoint
             imagePullPolicy: IfNotPresent
             volumeMounts:
             - name: cross-container
               mountPath: /kaniko/.docker
-            - name: pv
-              mountPath: /tmp/kaniko
           volumes:
           - name: main-cm
             configMap:
@@ -52,7 +50,4 @@ spec:
           - name: cross-container
             emptyDir:
               medium: Memory
-          - name: pv
-            hostPath:
-              path: /tmp/kaniko
 
