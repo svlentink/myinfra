@@ -2,18 +2,20 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: build-containers
+  name: main
 spec:
-  schedule: "11 1,2,3,4,5,6 * * *"
+  schedule: "* * * * *"
   #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
   jobTemplate:
     spec:
       template:
         spec:
           restartPolicy: Never #OnFailure
-          containers:
-          - name: main
-            image: gcr.io/kaniko-project/executor:latest
+          initContainers:
+          - name: init
+            image: debian:bullseye-slim
+            command:
+            - /entrypoint.sh
             imagePullPolicy: IfNotPresent
             envFrom:
             - secretRef:
@@ -22,14 +24,35 @@ spec:
             - name: main-cm
               mountPath: /entrypoint.sh
               subPath: entrypoint.sh
-              readOnly: true
             - name: main-cm
-              mountPath: /tmp/list.txt
+              mountPath: /tmp/list
               subPath: list.txt
               readOnly: true
+            - name: cross-container
+              mountPath: /kaniko/.docker
+              readOnly: false
+            - name: pv
+              mountPath: /tmp/kaniko
+          containers:
+          - name: main
+            image: gcr.io/kaniko-project/executor:debug
+            command:
+            - /kaniko/.docker/entrypoint
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+            - name: cross-container
+              mountPath: /kaniko/.docker
+            - name: pv
+              mountPath: /tmp/kaniko
           volumes:
           - name: main-cm
             configMap:
               name: main-cm
               defaultMode: 0554
+          - name: cross-container
+            emptyDir:
+              medium: Memory
+          - name: pv
+            hostPath:
+              path: /tmp/kaniko
 
