@@ -18,4 +18,8 @@ secretGenerator:
 - name: docker
   env: .env
   type: Opaque
+- name: regcred
+  files:
+  - .dockerconfigjson
+  type: kubernetes.io/dockerconfigjson
 

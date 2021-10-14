@@ -11,3 +11,7 @@ Currently we have a very simple system,
 that runs 6 times per days.
 Thus this system will only build 42 containers per week.
 
+## secret creation
+
+https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker
+

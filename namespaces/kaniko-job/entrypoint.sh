@@ -8,21 +8,17 @@ CURRENT_DAY=`date +%j`
 TOTAL_JOBS=`wc -l $JOBLIST|grep -o [0-9]*`
 
 # https://github.com/GoogleContainerTools/kaniko#pushing-to-docker-hub
-#mkdir -p /kaniko/.docker
+mkdir -p /kaniko/.docker
 CREDENTIALS=`echo $DOCKER_USER:$DOCKER_PASSWORD|base64`
 cat << EOF > /kaniko/.docker/config.json
 {
 	"auths": {
 		"https://index.docker.io/v1/": {
-			"auth": "$CREDENTIALS",
 			"username": "$DOCKER_USER",
 			"password": "$DOCKER_PASSWORD",
-			"email": "$DOCKER_EMAIL"
+			"email": "$DOCKER_EMAIL",
+			"auth": "$CREDENTIALS"
 		}
-	},
-	"experimental" : "disabled",
-	"HttpHeaders" : {
-		"User-Agent" : "Docker-Client/19.03.4 (darwin)"
 	}
 }
 EOF
@@ -40,10 +36,20 @@ fi
 
 # https://github.com/GoogleContainerTools/kaniko/blob/master/deploy/Dockerfile
 # https://github.com/GoogleContainerTools/kaniko/issues/475
+# https://github.com/GoogleContainerTools/kaniko/issues/702
 cat << EOF > /kaniko/.docker/entrypoint
 #!/busybox/sh
+set -ve
 cat /kaniko/.docker/config.json
-/kaniko/executor $LINE_TO_EXECUTE
+/kaniko/executor \
+	--registry-mirror index.docker.io \
+	--verbosity=trace \
+	$LINE_TO_EXECUTE
+#	--insecure \
+#	--insecure-pull \
+#	--skip-tls-verify \
+#	--skip-tls-verify-pull \
+#	--no-push \
 EOF
 chmod +x /kaniko/.docker/entrypoint
 

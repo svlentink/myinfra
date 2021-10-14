@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: main
 spec:
-  schedule: "31 1,2,3,4,5,6,18 * * *"
+  schedule: "7 1,2,3,4,5,6 * * *"
   #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
   jobTemplate:
     spec:
@@ -34,13 +34,19 @@ spec:
               readOnly: false
           containers:
           - name: main
-            image: gcr.io/kaniko-project/executor:debug #-v0.22.0
+# https://github.com/GoogleContainerTools/kaniko/issues/1209#issuecomment-672184831
+            image: gcr.io/kaniko-project/executor:debug-v0.22.0
+#            env:
+#            - name: DOCKER_CONFIG
+#              value: /kaniko/.docker/
             command:
             - /busybox/sh
-            - /kaniko/.docker/entrypoint
+            - /shared/entrypoint
             imagePullPolicy: IfNotPresent
             volumeMounts:
             - name: cross-container
+              mountPath: /shared
+            - name: kaniko-secret
               mountPath: /kaniko/.docker
           volumes:
           - name: main-cm
@@ -50,4 +56,11 @@ spec:
           - name: cross-container
             emptyDir:
               medium: Memory
+# https://github.com/GoogleContainerTools/kaniko/blob/0477900febfacb98b88abdbfaf8bbaeb05f51060/examples/pod.yaml
+          - name: kaniko-secret
+            secret:
+             secretName: regcred
+             items:
+             - key: .dockerconfigjson
+               path: config.json
 
