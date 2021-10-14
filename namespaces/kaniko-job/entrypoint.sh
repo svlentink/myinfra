@@ -14,7 +14,7 @@ cat << EOF > /kaniko/.docker/config.json
 {
 	"auths": {
 		"https://index.docker.io/v1/": {
-			"auth": "$CREDENTIALS"
+			"auth": "$CREDENTIALS",
 			"username": "$DOCKER_USER",
 			"password": "$DOCKER_PASSWORD",
 			"email": "$DOCKER_EMAIL"
