@@ -15,10 +15,18 @@ cat << EOF > /kaniko/.docker/config.json
 	"auths": {
 		"https://index.docker.io/v1/": {
 			"auth": "$CREDENTIALS"
+			"username": "$DOCKER_USER",
+			"password": "$DOCKER_PASSWORD",
+			"email": "$DOCKER_EMAIL"
 		}
+	},
+	"experimental" : "disabled",
+	"HttpHeaders" : {
+		"User-Agent" : "Docker-Client/19.03.4 (darwin)"
 	}
 }
 EOF
+# https://github.com/GoogleContainerTools/skaffold/issues/3319
 
 OFFSET_OF_THE_DAY=$(($AMOUNT_RUNS_PER_DAY * $(($CURRENT_DAY - 1)) ))
 #echo "$AMOUNT_RUNS_PER_DAY, $CURRENT_HOUR, $CURRENT_DAY, $TOTAL_JOBS, $OFFSET_OF_THE_DAY"
@@ -34,6 +42,7 @@ fi
 # https://github.com/GoogleContainerTools/kaniko/issues/475
 cat << EOF > /kaniko/.docker/entrypoint
 #!/busybox/sh
+cat /kaniko/.docker/config.json
 /kaniko/executor $LINE_TO_EXECUTE
 EOF
 chmod +x /kaniko/.docker/entrypoint

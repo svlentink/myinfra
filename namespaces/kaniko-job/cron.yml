@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: main
 spec:
-  schedule: "11 1,2,3,4,5,6 * * *"
+  schedule: "31 1,2,3,4,5,6,18 * * *"
   #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
   jobTemplate:
     spec:
@@ -34,7 +34,7 @@ spec:
               readOnly: false
           containers:
           - name: main
-            image: gcr.io/kaniko-project/executor:debug
+            image: gcr.io/kaniko-project/executor:debug #-v0.22.0
             command:
             - /busybox/sh
             - /kaniko/.docker/entrypoint
