@@ -1,6 +1,6 @@
---context=git://github.com/svlentink/www --destination=svlentink/mywebsite
+--context=git://github.com/svlentink/www --destination=svlentink/mywebsite:latest
 --context=git://github.com/svlentink/www --destination=svlentink/mywebsite:data --dockerfile=./data.Dockerfile
---context=git://github.com/svlentink/resume --destination=svlentink/yaml-resume
+--context=git://github.com/svlentink/resume --destination=svlentink/yaml-resume:latest
 --context=git://github.com/svlentink/resume --destination=svlentink/yaml-resume:myresume --dockerfile=./myresume.Dockerfile
---context=git://github.com/svlentink/myhugoblogs --destination=svlentink/myhugoblogs-data
---context=git://github.com/svlentink/life-planner --destination=svlentink/lplan-data
+--context=git://github.com/svlentink/myhugoblogs --destination=svlentink/myhugoblogs-data:latest
+--context=git://github.com/svlentink/life-planner --destination=svlentink/lplan-data:latest

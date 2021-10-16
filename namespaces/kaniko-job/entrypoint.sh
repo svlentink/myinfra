@@ -3,20 +3,17 @@ set -ve
 
 JOBLIST=/tmp/list
 AMOUNT_RUNS_PER_DAY=6
-CURRENT_HOUR=`date +%H`
+CURRENT_HOUR=`date +%H|grep -o '[1-9].*'`
 CURRENT_DAY=`date +%j`
 TOTAL_JOBS=`wc -l $JOBLIST|grep -o [0-9]*`
 
 # https://github.com/GoogleContainerTools/kaniko#pushing-to-docker-hub
 mkdir -p /kaniko/.docker
-CREDENTIALS=`echo $DOCKER_USER:$DOCKER_PASSWORD|base64`
+CREDENTIALS=`echo -n $DOCKER_USER:$DOCKER_PASSWORD|base64`
 cat << EOF > /kaniko/.docker/config.json
 {
 	"auths": {
 		"https://index.docker.io/v1/": {
-			"username": "$DOCKER_USER",
-			"password": "$DOCKER_PASSWORD",
-			"email": "$DOCKER_EMAIL",
 			"auth": "$CREDENTIALS"
 		}
 	}
@@ -40,11 +37,11 @@ fi
 cat << EOF > /kaniko/.docker/entrypoint
 #!/busybox/sh
 set -ve
-cat /kaniko/.docker/config.json
+#cat /kaniko/.docker/config.json
 /kaniko/executor \
-	--registry-mirror index.docker.io \
-	--verbosity=trace \
 	$LINE_TO_EXECUTE
+#	--verbosity=trace \
+#	--registry-mirror index.docker.io \
 #	--insecure \
 #	--insecure-pull \
 #	--skip-tls-verify \
@@ -53,8 +50,5 @@ cat /kaniko/.docker/config.json
 EOF
 chmod +x /kaniko/.docker/entrypoint
 
-exit 0
-cat /kaniko/.docker/entrypoint
-cat /kaniko/.docker/config.json # WARNING exposes password to logs
 echo "finished $0"
 

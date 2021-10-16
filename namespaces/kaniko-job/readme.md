@@ -13,5 +13,10 @@ Thus this system will only build 42 containers per week.
 
 ## secret creation
 
-https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker
+Please use `docker login`
+instead of what the
+[docs](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#log-in-to-docker)
+say, since it the `base64` method might
+[fail](https://github.com/GoogleContainerTools/kaniko/issues/1209#issuecomment-944903966)
+you.
 
