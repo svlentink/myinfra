@@ -4,3 +4,4 @@
 --context=git://github.com/svlentink/resume --destination=svlentink/yaml-resume:myresume --dockerfile=./myresume.Dockerfile
 --context=git://github.com/svlentink/myhugoblogs --destination=svlentink/myhugoblogs-data:latest
 --context=git://github.com/svlentink/life-planner --destination=svlentink/lplan-data:latest
+--context=git://github.com/svlentink/dockerfiles --destination=svlentink/code-server:latest --context-sub-path=svlentink/code-server
