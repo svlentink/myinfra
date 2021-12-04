@@ -28,8 +28,20 @@ When switching servers and not floating the IP to the new server,
 then keep the old server with its IP active for 72+ hours for NS to be propagated.
 The actual switch is done in the interface of the DNS registrar.
 
+## Exit strategy
+
+We do not use cloud vendor native tools
+(except for storage, which is accessible through the s3 protocol),
+to prevent a vendor lock in.
+For the software on the infra
+we strive to have all the components to be able to export their data
+to a portable format, allowing us to switch components when desired.
+
+
 ## FIXME
 
 - explain life cycle management (update cadence)
-- explain exit strategy
+
+
+
 
