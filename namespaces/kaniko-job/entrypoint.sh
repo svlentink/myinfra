@@ -2,10 +2,11 @@
 set -ve
 
 JOBLIST=/tmp/list
-AMOUNT_RUNS_PER_DAY=6
+AMOUNT_RUNS_PER_DAY=8
 CURRENT_HOUR=`date +%H|grep -o '[1-9].*'`
 CURRENT_DAY=`date +%j`
 TOTAL_JOBS=`wc -l $JOBLIST|grep -o [0-9]*`
+TOTAL_JOBS=`grep '^--' $JOBLIST|wc -l`
 
 # https://github.com/GoogleContainerTools/kaniko#pushing-to-docker-hub
 mkdir -p /kaniko/.docker
