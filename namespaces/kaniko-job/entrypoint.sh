@@ -22,9 +22,11 @@ EOF
 
 
 create_kaniko_entrypoint(){
-	if [[ -z "$LINE_TO_EXECUTE" ]]; then
+	if [ -z "$1" ]; then
 		echo 'ERROR in script'
 		exit 1
+	else
+		local LINE_TO_EXECUTE="$1"
 	fi
 	echo "$FUNCNAME $LINE_TO_EXECUTE"
 	# https://github.com/GoogleContainerTools/kaniko/blob/master/deploy/Dockerfile
@@ -48,7 +50,7 @@ create_kaniko_entrypoint(){
 }
 
 
-if [[ -z "$BUILD_ALL" ]]; then
+if [ -z "$BUILD_ALL" ]; then
 	# BUILD_ALL not set, thus we'll only build one
 	AMOUNT_RUNS_PER_DAY=7
 	CURRENT_HOUR=`date +%H|grep -o '[1-9].*'`
@@ -62,11 +64,13 @@ if [[ -z "$BUILD_ALL" ]]; then
 	LINE_TO_EXECUTE=`head -$LINE_NUMBER $JOBLIST| tail -1`
 	echo "$LINE_NUMBER: $LINE_TO_EXECUTE"
 	
-	create_kaniko_entrypoint
+	create_kaniko_entrypoint "$LINE_TO_EXECUTE"
 else
 	# build all
+	# NOTE the following does NOT work due to:
+	# https://github.com/GoogleContainerTools/kaniko/issues/1118
 	while read LINE_TO_EXECUTE; do
-	  create_kaniko_entrypoint
+	  create_kaniko_entrypoint "$LINE_TO_EXECUTE --cleanup"
 	done < $JOBLIST
 fi
 
