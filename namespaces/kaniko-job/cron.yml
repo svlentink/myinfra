@@ -10,7 +10,7 @@ spec:
     spec:
       template:
         spec:
-          restartPolicy: Never #OnFailure
+          restartPolicy: OnFailure
           initContainers:
           - name: init
             image: debian:bullseye-slim
@@ -24,6 +24,8 @@ spec:
             env:
             - name: TZ
               value: CET
+            #- name: BUILD_ALL
+            #  value: go-for-it
             volumeMounts:
             - name: main-cm
               mountPath: /entrypoint.sh
