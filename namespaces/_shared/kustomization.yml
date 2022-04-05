@@ -6,5 +6,6 @@ generatorOptions:
 
 resources:
 - disable-HSTS.yml
-- letsencrypt.yml
+- issuer.yml
+- cluster-issuer.yml
 

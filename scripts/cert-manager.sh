@@ -1,7 +1,7 @@
 #!/bin/sh
 
 version=`curl -sSI https://github.com/jetstack/cert-manager/releases/latest|grep 'location:'|grep -o 'v[0-9]\.[0-9]\.[0-9]'`
-version='v1.2.0'
+version='v1.8.0'
 
 echo $version > /var/log/installed-cert-manager-version.txt
 

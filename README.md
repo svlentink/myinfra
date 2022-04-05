@@ -19,7 +19,7 @@ At this moment I only run services on port 80, 443, 443 udp and 53 udp.
 - on old server: `scripts/backup-k8s-pvs.sh`
 - on laptop: `scp -3 old-server:/tmp/backup-*.tgz new-server:/`
 - on new server: `cd /;tar xzf /backup-*.tgz`
-- you may want to switch IP here?
+- you may want to switch IP here? (also change in `namespaces/dns/pod.yml`)
 - on new server: `cd /srv/git/myinfra/namespaces; ./main.sh apply cdn`
 
 ### IP switch
