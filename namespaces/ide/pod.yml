@@ -15,17 +15,26 @@ spec:
     spec:
       containers:
       - name: ide
-        image: sapk/cloud9
 # We overwrite forever with node since we want it to fail
 # we had this issue with unreliable storage
 # https://github.com/sapk/dockerfiles/blob/master/cloud9/Dockerfile.alpine
 #        command: ["node", "/root/.c9/server.js", "-w", "/workspace", "--listen", "0.0.0.0"]
-        args: ["--auth", ":"]
+        args:
+        - "--auth"
+        #- ":" #cloud9
+        - none #vscode
+        #image: sapk/cloud9
+        image: svlentink/code-server
         ports:
-        - containerPort: 8181
+        - containerPort: 8181 #cloud9
+        - containerPort: 8080 #vscode
         volumeMounts:
         - name: ide
-          mountPath: /workspace
+          #mountPath: /workspace #cloud9
+          mountPath: /home/coder/stateful #vscode
+        securityContext: #vscode is by default non root
+          allowPrivilegeEscalation: false
+          runAsUser: 0
       volumes:
       - name: ide
         hostPath:

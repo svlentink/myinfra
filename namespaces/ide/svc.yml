@@ -7,6 +7,8 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 8181
+    #port: 8181 #cloud9
+    port: 8080 #vscode
   selector:
     app: ide
+

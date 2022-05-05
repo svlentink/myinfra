@@ -28,19 +28,29 @@ spec:
     http: *http_rules
   - host: blog.lent.ink
     http: *http_rules
-  - host: lentink.consulting
-    http: *http_rules
   - host: loginalsburger.nl
     http: *http_rules
+  - host: lentink.consulting
+    http: *http_rules
+  - host: www.lent.ink
+    http: *http_rules
+  - host: www.curly.ninja
+    http: *http_rules
   - host: www.loginalsburger.nl
+    http: *http_rules
+  - host: www.lentink.consulting
     http: *http_rules
   tls:
   - hosts:
     - lent.ink
-    - blog.lent.ink
     - cdn.lent.ink
-    - lentink.consulting
+    - blog.lent.ink
+    - curly.ninja
     - loginalsburger.nl
+    - lentink.consulting
+    - www.lent.ink
+    - www.curly.ninja
     - www.loginalsburger.nl
+    - www.lentink.consulting
     secretName: cdn-tls
 
