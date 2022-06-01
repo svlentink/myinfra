@@ -4,6 +4,7 @@ kind: CronJob
 metadata:
   name: main
 spec:
+  #schedule: "*/5 * * * *"
   schedule: "11 1,2,3,4,5,6,7 * * *"
   #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
   jobTemplate:
@@ -31,13 +32,24 @@ spec:
               mountPath: /entrypoint.sh
               subPath: entrypoint.sh
             - name: main-cm
-              mountPath: /tmp/list
+              mountPath: /input-list
               subPath: list.txt
               readOnly: true
             - name: cross-container
               mountPath: /kaniko/.docker
               readOnly: false
+            - name: stateful-list
+              mountPath: /stateful-list-on-host
           containers:
+          # The keep alive container is just there to make sure the main
+          # container is restarted if there are multiple jobs to do
+          # and the pod is set to BUILD_ALL
+          #- name: keepalive
+          #  image: alpine
+          #  command:
+          #  - sh
+          #  - "-c"
+          #  - 'while [ -n "`ls /kaniko/.docker/buildjobs`" ];do sleep 1; done' 
           - name: main
 # https://github.com/GoogleContainerTools/kaniko/issues/1209#issuecomment-672184831
             image: gcr.io/kaniko-project/executor:debug #-v0.22.0
@@ -68,4 +80,6 @@ spec:
 #             items:
 #             - key: .dockerconfigjson
 #               path: config.json
-
+          - name: stateful-list
+            hostPath:
+              path: /var/kaniko-job

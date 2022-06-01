@@ -12,6 +12,7 @@ metadata:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   rules:
   - host: lent.ink

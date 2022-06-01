@@ -19,8 +19,8 @@ spec:
       - name: cdn
         image: svlentink/mywebsite
         imagePullPolicy: Always
-        ports:
-        - containerPort: 80
+        #ports:
+        #- containerPort: 80
         volumeMounts:
         - name: cdn-pdf
           mountPath: /var/www/cdn.lent.ink/pdf
@@ -30,6 +30,8 @@ spec:
           mountPath: /var/www/cdn.lent.ink/img
         - name: cdn-lp
           mountPath: /var/www/cdn.lent.ink/lp
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d
       volumes:
       - name: cdn-pdf
         hostPath:
@@ -55,4 +57,6 @@ spec:
 #        persistentVolumeClaim:
 #          claimName: cdn-lp-claim
 #          readOnly: true
-
+      - name: nginx-conf
+        hostPath:
+          path: /mnt/k8s/ide/gits/www/nginx
