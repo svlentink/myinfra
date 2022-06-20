@@ -1,0 +1,120 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+spec:
+  selector:
+    matchLabels:
+      app: main
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: main
+    spec:
+      volumes:
+      - name: cm
+        configMap:
+          name: cm
+          defaultMode: 0554
+      - name: shared
+        emptyDir: {}
+
+      containers:
+# Message bus
+      - name: kafka
+        image: docker.io/bitnami/kafka
+        ports:
+        - containerPort: 9092
+        env:
+        - name: KAFKA_CFG_ZOOKEEPER_CONNECT
+          value: localhost:2181
+        - name: ALLOW_PLAINTEXT_LISTENER
+          value: yes
+        - name: ZOO_HEAP_SIZE
+          value: "128"
+        resources: &memlimit
+          requests:
+            memory: "500Mi"
+          limits:
+            memory: "512Mi"
+      - name: zookeeper
+        image: docker.io/bitnami/zookeeper
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ALLOW_ANONYMOUS_LOGIN
+          value: yes
+        - name: KAFKA_HEAP_OPTS
+          value: "128"
+        resources: *memlimit
+
+
+# RDD; HDFS, blob, SQL etc.
+      - name: rdd #resilient distributed dataset
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: shared
+          mountPath: /usr/share/nginx/html/shared
+
+# Spark core; abstracting the execution from infra/data sources
+      - name: core
+        image: &basecont svlentink/airport #amancevice/pandas:alpine
+        #command: &cmd ["/docker-entrypoint"]
+        volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: cm
+          mountPath: /docker-entrypoint
+          subPath: core.py
+
+# One of the incoming data sources (scraper)
+# reads source, pub to kafka
+      - name: pub
+        image: *basecont #&kafpy badrmoh/kafka-python-prod-demo
+        #command: *cmd
+        volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: cm
+          mountPath: /docker-entrypoint
+          subPath: scraper.py
+
+# listen to kafka, write to rdd
+      - name: sub
+        image: *basecont #*kafpy
+        #command: *cmd
+        volumeMounts:
+        - name: shared
+          mountPath: /shared
+        - name: cm
+          mountPath: /docker-entrypoint
+          subPath: listener.py
+
+# health monitoring
+      - name: elk
+        image: busybox
+        command:
+        - sh
+        - "-c"
+        - |
+          while true; do
+            ls -al /shared > /shared/filelist.txt; # or we could use "index on;" in nginx.conf
+
+            ls /shared|wc -l > /tmp/amount;
+
+            sleep 2;
+
+            if [[ "`cat /tmp/amount`" -lt `ls /shared|wc -l` ]]; then
+              echo "OK; files incoming";
+            else
+              echo "NOK; inflow stopped";
+            fi > /shared/status.txt;
+          done
+        volumeMounts:
+        - name: shared
+          mountPath: /shared
+
