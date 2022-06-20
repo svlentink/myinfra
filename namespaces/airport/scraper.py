@@ -15,7 +15,7 @@ def get_file(url: str ="https://raw.githubusercontent.com/jpatokal/openflights/m
 if __name__ == "__main__":
     producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
-    lines = get_file().split()
+    lines = get_file().split("\r\n")
     print(f"File contains {len(lines)} lines")
 
     for line in lines:

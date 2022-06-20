@@ -6,6 +6,8 @@ spec:
   ports:
   - name: http
     port: 80
+  - name: kafka
+    port: 9092
   selector:
     app: main
 
