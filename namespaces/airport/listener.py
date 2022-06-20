@@ -17,5 +17,5 @@ if __name__ == "__main__":
 
         filepath = f"{OUTPUT_DIR}/{datetime.datetime.utcnow().isoformat()}.txt"
         with open(filepath,"w") as fp:
-            fp.write(str(msg))
+            fp.write(str(msg.value.decode()))
 

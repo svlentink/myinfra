@@ -2,6 +2,7 @@
 
 
 import csv
+import io
 import json
 from kafka import KafkaConsumer, TopicPartition
 
@@ -20,7 +21,9 @@ if __name__ == "__main__":
         fileheader = "airline,sourceAirport,sourceAirportId,destinationAirport,destinationAirportId,codeshare,stops,equipment"
         headerlength = len(fileheader.split(','))
 
-        reader = csv.DictReader(f"{fileheader}\n{msg}")
+        csv_data = f"{fileheader}\n{msg.value.decode()}"
+        fp = io.StringIO(csv_data)
+        reader = csv.DictReader(fp, delimiter=",")
 
         for row in reader:
             print(row)
