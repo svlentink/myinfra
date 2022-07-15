@@ -1,0 +1,1 @@
+--context=git://github.com/svlentink/myinfra --destination=svlentink/airport:latest --context-sub-path=namespaces/airport

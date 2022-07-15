@@ -1,4 +1,4 @@
---context=git://github.com/svlentink/myinfra --destination=svlentink/airport:latest --context-sub-path=namespaces/airport
+--context=git://github.com/svlentink/password-generator --destination=svlentink/pwdgen-data:latest
 --context=git://github.com/svlentink/www --destination=svlentink/mywebsite:latest
 --context=git://github.com/svlentink/www --destination=svlentink/mywebsite:data --dockerfile=./data.Dockerfile
 --context=git://github.com/svlentink/resume --destination=svlentink/yaml-resume:latest
