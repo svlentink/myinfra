@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: main
+spec:
+  ports:
+  - name: http
+    #port: 8181 #cloud9
+    port: 8080 #vscode
+  selector:
+    app: main
+

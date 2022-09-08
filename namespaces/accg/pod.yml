@@ -1,0 +1,36 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+spec:
+  selector:
+    matchLabels:
+      app: main
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+      - name: main
+        args:
+        - "--auth"
+        #- ":" #cloud9
+        - none #vscode
+        #image: sapk/cloud9
+        image: svlentink/code-server
+        volumeMounts:
+        - name: main
+          #mountPath: /workspace #cloud9
+          mountPath: /home/coder/stateful #vscode
+        securityContext: #vscode is by default non root
+          allowPrivilegeEscalation: false
+          runAsUser: 0
+      volumes:
+      - name: main
+        hostPath:
+          path: /mnt/k8s/ide/gits/accg
+
+

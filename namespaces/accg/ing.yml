@@ -1,0 +1,27 @@
+# https://kubernetes.github.io/ingress-nginx/examples/auth/basic/
+# https://appscode.com/products/voyager/6.0.0-rc.0/guides/ingress/security/basic-auth/
+# https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#authentication
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main
+  annotations:
+    nginx.ingress.kubernetes.io/whitelist-source-range: &ip 89.154.73.218/32
+    ingress.kubernetes.io/whitelist-source-range: *ip
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: accg.lent.ink
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: main
+            port:
+              #number: 8181 #cloud9
+              number: 8080 #vscode
+
