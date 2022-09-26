@@ -32,6 +32,8 @@ spec:
           mountPath: /var/www/cdn.lent.ink/lp
         - name: nginx-conf
           mountPath: /etc/nginx/conf.d
+        - name: dev-file-explorer
+          mountPath: /var/www/dev-fs.lent.ink
       volumes:
       - name: cdn-pdf
         hostPath:
@@ -42,21 +44,15 @@ spec:
       - name: cdn-tar
         hostPath:
           path: /mnt/k8s/cdn/tar
-#        persistentVolumeClaim:
-#          claimName: cdn-tar-claim
-#          readOnly: true
       - name: cdn-img
         hostPath:
           path: /mnt/k8s/cdn/img
-#        persistentVolumeClaim:
-#          claimName: cdn-img-claim
-#          readOnly: true
       - name: cdn-lp
         hostPath:
           path: /mnt/k8s/ide/gits/pp/lp
-#        persistentVolumeClaim:
-#          claimName: cdn-lp-claim
-#          readOnly: true
       - name: nginx-conf
         hostPath:
           path: /mnt/k8s/ide/gits/www/nginx
+      - name: dev-file-explorer
+        hostPath:
+          path: /mnt/k8s/ide
