@@ -26,7 +26,6 @@ options {
   directory "$ZONEFILESDIR";
 //  key-directory "/keys";
   recursion no;
-  dnssec-enable no;
   dnssec-validation auto;
 };
 EOF
