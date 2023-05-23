@@ -34,6 +34,17 @@ spec:
           mountPath: /etc/nginx/conf.d
         - name: dev-file-explorer
           mountPath: /var/www/dev-fs.lent.ink
+        livenessProbe:
+          exec:
+            command:
+            - date
+            - +%T
+            - '|'
+            - grep
+            - -v
+            - '04:32:'
+          periodSeconds: 58
+          initialDelaySeconds: 36000
       volumes:
       - name: cdn-pdf
         hostPath:
