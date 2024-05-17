@@ -1,0 +1,32 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cache
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: FileSystem
+  selector:
+    matchLabels:
+      name: cache
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: db
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+  storageClassName: FileSystem
+  selector:
+    matchLabels:
+      name: db
+

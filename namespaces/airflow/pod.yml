@@ -1,0 +1,64 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#creating-a-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airflow
+spec:
+  selector:
+    matchLabels:
+      app: airflow
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: airflow
+    spec:
+      containers:
+      - name: worker
+        image: bitnami/airflow-worker:latest
+        envFrom:
+        - secretRef:
+            name: main-env
+
+      - name: scheduler
+        image: bitnami/airflow-scheduler:latest
+        envFrom:
+        - secretRef:
+            name: main-env
+
+      - name: webserver
+        image: bitnami/airflow:latest
+        envFrom:
+        - secretRef:
+            name: main-env
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+
+      - name: db
+        image: bitnami/postgresql:latest
+        envFrom:
+        - secretRef:
+            name: main-env
+        volumeMounts:
+        - name: db
+          mountPath: /bitnami/postgresql
+
+      - name: cache
+        image: bitnami/redis:latest
+        envFrom:
+        - secretRef:
+            name: main-env
+        volumeMounts:
+        - name: cache
+          mountPath: /bitnami
+
+      volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: cache
+          readOnly: false
+      - name: db
+        persistentVolumeClaim:
+          claimName: db
+          readOnly: false
