@@ -33,6 +33,8 @@ spec:
     http: *http_rules
   - host: lentink.consulting
     http: *http_rules
+  - host: gitcsvforms.lent.ink
+    http: *http_rules
   - host: www.lent.ink
     http: *http_rules
   - host: www.curly.ninja
@@ -46,6 +48,7 @@ spec:
     - lent.ink
     - cdn.lent.ink
     - blog.lent.ink
+    - gitcsvforms.lent.ink
     - curly.ninja
     - loginalsburger.nl
     - lentink.consulting

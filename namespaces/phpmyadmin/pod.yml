@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+spec:
+  selector:
+    matchLabels:
+      app: main
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: main
+    spec:
+#     restartPolicy: Never
+      containers:
+      - name: db
+        image: mariadb #mysql
+        # By exposing the port here, we lose access to it through localhost
+        #ports:
+        #- containerPort: 3306
+        #  name: sql
+        #envFrom:
+        #- secretRef:
+        #    name: db-env
+        env: &env
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MARIADB_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_USERNAME
+          value: root
+        - name: PMA_HOST
+          value: 127.0.0.1
+        #- name: PMA_PORT
+        #  value: "3306"
+        - name: PMA_ARBITRARY
+          value: "1"
+        - name: MARIADB_ALLOW_EMPTY_ROOT_PASSWORD
+          value: "1"
+
+      - name: webui
+        image: adminer #phpmyadmin #/phpmyadmin
+        ports:
+        - containerPort: 8080
+          name: http
+        env: *env 
+

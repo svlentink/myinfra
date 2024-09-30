@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-  echo "USAGE: $0 [create|apply|delete]"
+if [ -z "$2" ]; then
+  echo "USAGE: $0 [create|apply|delete]" dir1 dir2 dir3
   exit 1
 else
   ACTION="$1"

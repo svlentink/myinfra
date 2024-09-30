@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: main
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basicauth
+    nginx.ingress.kubernetes.io/auth-realm: 'admin area'
+#    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  rules:
+  - host: &host sqlplayground.lent.ink
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: main
+            port:
+              number: 8080
+  tls:
+  - hosts:
+    - *host
+    secretName: tls
+
