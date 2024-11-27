@@ -46,7 +46,7 @@ spec:
 #              claimName: input
           - name: output
             hostPath:
-              path: /tmp/bookmarks-job-output
+              path: /mnt/k8s/ide
 #            persistentVolumeClaim:
 #              claimName: output
 

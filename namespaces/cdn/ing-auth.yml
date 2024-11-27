@@ -19,6 +19,10 @@ metadata:
       if ($tls_test != "TLSv1.3") {
         return 302 https://google.com/?q=enforce+browser+to+use+TLSv1.3+instead+of+$ssl_protocol;
       }
+      include mime.types;
+      types {
+        application/javascript js mjs;
+      }
 spec:
   rules:
   - host: &host dev-fs.lent.ink
