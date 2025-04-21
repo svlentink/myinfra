@@ -5,7 +5,7 @@ metadata:
   name: main
 spec:
   #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
-  #schedule: "*/5 * * * *"
+  #schedule: "*/15 * * * *"
   schedule: "11 1,2,3,4,5,6,7 * * *"
   concurrencyPolicy: Forbid
   jobTemplate:

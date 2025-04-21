@@ -44,6 +44,13 @@ kubectl get all --all-namespaces
 kubectl cluster-info
 kubectl top pod -A --containers
 
+cat << EOF >> /var/snap/microk8s/current/args/kubelet
+--image-gc-high-threshold=50
+--image-gc-low-threshold=40
+--maximum-dead-containers=0
+EOF
+
+
 echo Sleeping a while to make sure the cluster is ready
 sleep 120
 
