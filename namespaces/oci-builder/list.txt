@@ -1,8 +1,8 @@
---context=git://github.com/svlentink/www --destination=svlentink/mywebsite:latest
---context=git://github.com/svlentink/www --destination=svlentink/mywebsite:data --dockerfile=./data.Dockerfile
---context=git://github.com/svlentink/resume --destination=svlentink/yaml-resume:latest
---context=git://github.com/svlentink/resume --destination=svlentink/yaml-resume:myresume --dockerfile=./myresume.Dockerfile
---context=git://github.com/svlentink/myhugoblogs --destination=svlentink/myhugoblogs-data:latest
---context=git://github.com/svlentink/life-planner --destination=svlentink/lplan-data:latest
---context=git://github.com/svlentink/dockerfiles --destination=svlentink/code-server:latest --context-sub-path=svlentink/code-server --compressed-caching=false
---context=git://github.com/svlentink/dockerfiles --destination=svlentink/csvforms-base:latest --context-sub-path=svlentink/csvforms
+CLONE_URL=git://github.com/svlentink/www          IMG_TAG=svlentink/mywebsite:latest
+CLONE_URL=git://github.com/svlentink/www          IMG_TAG=svlentink/mywebsite:data          DOCKERFILE=./data.Dockerfile
+CLONE_URL=git://github.com/svlentink/resume       IMG_TAG=svlentink/yaml-resume:latest
+CLONE_URL=git://github.com/svlentink/resume       IMG_TAG=svlentink/yaml-resume:myresume    DOCKERFILE=./myresume.Dockerfile
+CLONE_URL=git://github.com/svlentink/myhugoblogs  IMG_TAG=svlentink/myhugoblogs-data:latest
+CLONE_URL=git://github.com/svlentink/life-planner IMG_TAG=svlentink/lplan-data:latest
+CLONE_URL=git://github.com/svlentink/dockerfiles  IMG_TAG=svlentink/code-server:latest      CONTEXT=svlentink/code-server
+CLONE_URL=git://github.com/svlentink/dockerfiles  IMG_TAG=svlentink/csvforms-base:latest    CONTEXT=svlentink/csvforms
