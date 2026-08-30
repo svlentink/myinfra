@@ -6,7 +6,7 @@ data:
   hsts-include-subdomains: "true"
   hsts-max-age: "0"
   hsts-preload: "false"
-  ssl-protocols: "TLSv1.2 TLSv1.3"
+  ssl-protocols: "TLSv1.3"
 kind: ConfigMap
 metadata:
   namespace: ingress

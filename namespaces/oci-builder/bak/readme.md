@@ -1,9 +1,12 @@
 # Building containers
 
-Since Dockerhub is having the paid option for automated builds,
-why not use
+DEPRECATED
+
+We started out a decade ago with Dockerhub automated builds,
+then those became a paid option.
+Then I switched to
 [Kaniko](https://github.com/GoogleContainerTools/kaniko)
-instead?
+which has now been deprecated over a year and stopped working.
 
 ## Scheduling
 

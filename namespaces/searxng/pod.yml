@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+spec:
+  selector:
+    matchLabels:
+      app: main
+  replicas: 1
+  template: # create pods; pod template
+    metadata:
+      labels:
+        app: main
+    spec:
+#     restartPolicy: Never
+      containers:
+      - name: searxng
+        image: docker.io/searxng/searxng:latest
+        imagePullPolicy: Always
+        env: # https://docs.searxng.org/admin/settings/settings_server.html
+        - name: SEARXNG_BASE_URL
+          value: https://search.lent.ink/
+        - name: SEARXNG_IMAGE_PROXY
+          value: "false"
+        - name: SEARXNG_PORT
+          value: 80
+        - name: SEARXNG_METHOD
+          value: GET # https://github.com/searxng/searxng/pull/3619
+

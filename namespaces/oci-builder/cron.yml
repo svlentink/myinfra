@@ -1,0 +1,63 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: main
+spec:
+  #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
+  schedule: "*/12 * * * *"
+  #schedule: "11 1,2,3,4,5,6,7 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never #OnFailure
+          initContainers:
+          - name: init
+            image: debian:bullseye-slim
+            command:
+            - sh
+            - /entrypoint.sh
+            imagePullPolicy: IfNotPresent
+            envFrom:
+            - secretRef:
+                name: docker
+            env:
+            - name: TZ
+              value: CET
+            volumeMounts:
+            - name: main-cm
+              mountPath: /entrypoint.sh
+              subPath: entrypoint.sh
+            - name: main-cm
+              mountPath: /input-list
+              subPath: list.txt
+              readOnly: true
+            - name: cross-container
+              mountPath: /kaniko/.docker
+              readOnly: false
+            - name: stateful-list
+              mountPath: /stateful-list-on-host
+          containers:
+          - name: main
+            image: registry.access.redhat.com/ubi8/buildah:latest #8.10-1787721974
+            command:
+            - /busybox/sh
+            - /kaniko/.docker/entrypoint
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+            - name: cross-container
+              mountPath: /kaniko/.docker
+          volumes:
+          - name: main-cm
+            configMap:
+              name: main-cm
+              defaultMode: 0554
+          - name: cross-container
+            emptyDir:
+              medium: Memory
+          - name: stateful-list
+            hostPath:
+              path: /var/kaniko-job
