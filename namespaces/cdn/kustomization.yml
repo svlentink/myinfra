@@ -7,7 +7,7 @@ generatorOptions:
 
 resources:
 #- pv.yml
-- ing-http.yml
+#- ing-http.yml # very dangerous, because if auth fails, this is the fallback and it will be open to the world
 - ing-https.yml
 - ing-auth.yml
 - svc.yml
