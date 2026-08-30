@@ -9,6 +9,8 @@ spec:
   - name: http
     #port: 8181 #cloud9
     port: 8080 #vscode
+  - name: http
+    port: 80
   selector:
     app: ide
 

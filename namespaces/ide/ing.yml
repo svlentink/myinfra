@@ -8,6 +8,7 @@ metadata:
   name: ide
   annotations:
     kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true" # needed for dev-fs host
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: basicauth-webide
@@ -22,9 +23,16 @@ metadata:
       if ($tls_test != "TLSv1.3") {
         return 302 https://google.com/?q=enforce+browser+to+use+TLSv1.3+instead+of+$ssl_protocol;
       }
+#      add_header DNT "1" always;
+#      add_header Content-Type "text/javascript" always;
+#      types {
+#        text/javascript .mjs;
+#      }
+#      include mime.types;
+#    nginx.ingress.kubernetes.io/configuration-snippet: |
 spec:
   rules:
-  - host: dev.lent.ink
+  - host: &ide-host dev.lent.ink
     http:
       paths:
       - path: /
@@ -35,8 +43,19 @@ spec:
             port:
               #number: 8181 #cloud9
               number: 8080 #vscode
+  - host: &fs-host dev-fs.lent.ink
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ide
+            port:
+              number: 80
   tls:
   - hosts:
-    - dev.lent.ink
+    - *ide-host
+    - *fs-host
     secretName: ide-tls
 

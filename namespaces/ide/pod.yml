@@ -35,11 +35,23 @@ spec:
         securityContext: #vscode is by default non root
           allowPrivilegeEscalation: false
           runAsUser: 0
+      - name: cdn
+        image: svlentink/mywebsite
+        imagePullPolicy: Always
+        #ports:
+        #- containerPort: 80
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d
+        - name: ide
+          mountPath: /var/www/dev-fs.lent.ink
       volumes:
       - name: ide
         hostPath:
           path: /mnt/k8s/ide
 #        persistentVolumeClaim:
 #          claimName: ide-claim
-
+      - name: nginx-conf
+        hostPath:
+          path: /mnt/k8s/ide/gits/www/nginx
 
