@@ -5,7 +5,7 @@ INPUT_FILE=/input-list
 JOBLIST=/stateful-list-on-host/joblist.txt
 
 if [ ! -s $JOBLIST ]; then
-	grep '^--' "$INPUT_FILE" >> "$JOBLIST"
+	grep '^CLONE_URL' "$INPUT_FILE" >> "$JOBLIST"
 fi
 head -1 $JOBLIST > /tmp/next.env
 tail --lines=+2 $JOBLIST > /intermediate_file
@@ -26,6 +26,7 @@ fi
 
 # https://github.com/GoogleContainerTools/kaniko#pushing-to-docker-hub
 CREDENTIALS=`echo -n "$DOCKER_USER:$DOCKER_PASSWORD"|base64`
+mkdir -p /cross-container/.docker
 cat << EOF > /cross-container/.docker/config.json
 {
 	"auths": {
@@ -37,33 +38,33 @@ cat << EOF > /cross-container/.docker/config.json
 EOF
 # https://github.com/GoogleContainerTools/skaffold/issues/3319
 
+echo "Cloning: ${CLONE_URL}"
+command -v git || (apt update && apt install -y git)
+git clone \
+	--depth 1 \
+	"$CLONE_URL" \
+	/cross-container/workspace
+#	--branch "${BRANCH:-main}"
+cat /cross-container/workspace/.git/config
 
 cat <<-EOF > /cross-container/.docker/entrypoint
-	#!/busybox/sh
+	#!/bin/sh
 	set -ve
 
-	git clone \
-		--depth 1 \
-		"$CLONE_URL" \
-		/workspace
-#		--branch "${BRANCH:-main}" \
-
-	cd /workspace
+	cd /cross-container/workspace
+	find .
 
 	# Build with VFS storage driver + chroot isolation (no privileged mode needed)
-	buildah build \
-		--storage-driver vfs \
+	buildah --storage-driver vfs build \
 		--isolation chroot \
 		--layers \
 		--tag "$IMG_TAG" \
-		--file "${DOCKERFILE:-.Dockerfile}" \
+		--file "${DOCKERFILE:-./Dockerfile}" \
 		$BUILD_ARGS \
 		"${CONTEXT:-.}"
 	
-	buildah push
-		--storage-driver vfs \
-		"$IMG_TAG" \
-		"docker://$IMG_TAG"
+	buildah --storage-driver vfs push \
+		"$IMG_TAG"
 
 	/kaniko/executor $NEXT
 EOF

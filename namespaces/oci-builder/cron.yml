@@ -3,9 +3,11 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: main
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/buildah: unconfined
 spec:
   #schedule: "CRON_TZ=CET 11 1,2,3,4,5,6 * * *"
-  schedule: "*/12 * * * *"
+  schedule: "*/20 * * * *"
   #schedule: "11 1,2,3,4,5,6,7 * * *"
   concurrencyPolicy: Forbid
   jobTemplate:
@@ -16,7 +18,8 @@ spec:
           restartPolicy: Never #OnFailure
           initContainers:
           - name: init
-            image: debian:bullseye-slim
+            #image: docker.io/svlentink/git:latest
+            image: debian:latest #bullseye-slim
             command:
             - sh
             - /entrypoint.sh
@@ -36,25 +39,36 @@ spec:
               subPath: list.txt
               readOnly: true
             - name: cross-container
-              mountPath: /kaniko/.docker
+              mountPath: /cross-container
               readOnly: false
             - name: stateful-list
               mountPath: /stateful-list-on-host
           containers:
-          - name: main
+          - name: buildah
             image: registry.access.redhat.com/ubi8/buildah:latest #8.10-1787721974
             command:
-            - /busybox/sh
+            - /bin/sh
             - /cross-container/.docker/entrypoint
             imagePullPolicy: IfNotPresent
             volumeMounts:
             - name: cross-container
-              mountPath: /cross-container/.docker
+              mountPath: /cross-container
+            resources:
+              requests:
+                ephemeral-storage: &size-limit 10Gi
+              limits:
+                ephemeral-storage: 20Gi
             securityContext:
-              #allowPrivilegeEscalation: false
+              privileged: true
+              allowPrivilegeEscalation: true
+              seccompProfile:
+                type: Unconfined
               #runAsUser: 0
               capabilities:
                 add:
+                - CAP_SYS_ADMIN
+                - SYS_ADMIN
+
                 - CHOWN
                 - DAC_OVERRIDE
                 - FOWNER
@@ -69,7 +83,8 @@ spec:
               defaultMode: 0554
           - name: cross-container
             emptyDir:
-              medium: Memory
+              #medium: Memory
+              sizeLimit: *size-limit
           - name: stateful-list
             hostPath:
               path: /var/container-builder-job

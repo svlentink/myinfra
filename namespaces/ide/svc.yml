@@ -6,10 +6,10 @@ metadata:
 #  namespace: default
 spec:
   ports:
-  - name: http
+  - name: ide
     #port: 8181 #cloud9
     port: 8080 #vscode
-  - name: http
+  - name: cdn
     port: 80
   selector:
     app: ide
