@@ -1,5 +1,5 @@
-CLONE_URL=https://github.com/svlentink/www.git          IMG_TAG=docker.io/svlentink/mywebsite:latest
 CLONE_URL=https://github.com/svlentink/www.git          IMG_TAG=docker.io/svlentink/mywebsite:data          DOCKERFILE=./data.Dockerfile
+CLONE_URL=https://github.com/svlentink/www.git          IMG_TAG=docker.io/svlentink/mywebsite:latest
 CLONE_URL=https://github.com/svlentink/resume.git       IMG_TAG=docker.io/svlentink/yaml-resume:latest
 CLONE_URL=https://github.com/svlentink/resume.git       IMG_TAG=docker.io/svlentink/yaml-resume:myresume    DOCKERFILE=./myresume.Dockerfile
 CLONE_URL=https://github.com/svlentink/myhugoblogs.git  IMG_TAG=docker.io/svlentink/myhugoblogs-data:latest

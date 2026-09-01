@@ -52,21 +52,22 @@ cat <<-EOF > /cross-container/.docker/entrypoint
 	set -ve
 
 	cd /cross-container/workspace
-	find .
+	mkdir -p ~/.docker
+	cp /cross-container/.docker/config.json ~/.docker/config.json
 
 	# Build with VFS storage driver + chroot isolation (no privileged mode needed)
-	buildah --storage-driver vfs build \
+	BUILDAH_CONF='--storage-driver vfs'
+	BUILDAH_CONF='--storage-driver overlay'
+	buildah \$BUILDAH_CONF build \
 		--isolation chroot \
-		--layers \
 		--tag "$IMG_TAG" \
 		--file "${DOCKERFILE:-./Dockerfile}" \
 		$BUILD_ARGS \
 		"${CONTEXT:-.}"
+#		--layers \
 	
-	buildah --storage-driver vfs push \
+	buildah \$BUILDAH_CONF push \
 		"$IMG_TAG"
-
-	/kaniko/executor $NEXT
 EOF
 chmod +x /cross-container/.docker/entrypoint
 
